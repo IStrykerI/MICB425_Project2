@@ -1,0 +1,324 @@
+---
+title: "Module 3: Project 2 by Team 5"
+subtitle: "Charting the distributed nitrogen cycle"
+author: 
+  - Karl Abuan
+  - May Ho
+  - Jonah Lin
+  - Leilynaz Malekafzali
+  - Tiffany Yang
+  - Abdur Rahman M. A. Basher
+abstract: |
+  This is the abstract.
+  It consists of two paragraphs.
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+header-includes:
+   - \newcommand*{\secref}[1]{Section~\ref{#1}}
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    fig_caption: true
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+mainfont: Times
+fontsize: 11 pt
+editor_options:
+  chunk_output_type: console
+urlcolor: blue
+link-citations: yes
+bibliography: main.bib
+---
+
+```{r global_options, include=FALSE}
+knitr::clean_cache(clean = TRUE)
+knitr::opts_chunk$set(fig.width=8, fig.height=6, fig.align = "center", echo=FALSE, warning=FALSE, include=TRUE, tidy = TRUE, message=FALSE)
+```
+
+
+```{r, eval=FALSE}
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")  
+biocLite("phyloseq")
+library("tidyverse")
+library("gridExtra")
+library("magrittr")
+library("ggpubr")
+library("cowplot")
+```
+
+```{r, include=FALSE}
+source("https://bioconductor.org/biocLite.R")  
+library("phyloseq")
+library("tidyverse")
+library("gridExtra")
+library("magrittr")
+library("ggpubr")
+library("knitr")
+library("cowplot")
+
+theme_set(theme_bw())
+pal = "Set1"
+scale_colour_discrete <-  function(palname=pal, ...){
+  scale_colour_brewer(palette=palname, ...)
+}
+scale_fill_discrete <-  function(palname=pal, ...){
+  scale_fill_brewer(palette=palname, ...)
+}
+```
+
+* * *
+# Introduction
+# Materials and Experimental Configuration
+## Experimental Protocols
+
+To understand the correlation of microbial diversity and oxygen concentration across samples, we report four experimentally designed test protocols:
+
+**P1.** Analysis of the DNA abundance of norB with depth.
+
+**P2.** Analysis of similarities between the RNA abundance and the DNA abundance of norB with depth.
+
+**P3.** Reconstructing the taxa associated with norB and Analyze variance based on depth, DNA, and RNA.
+
+**P4.** Analysis of the abundance of norB in relation to nitrogen species in Saanich.
+
+
+## Dataset
+
+```{r loadingDNA}
+norB.DNA.10m <- read_tsv("data/dna/norB_DNA_10m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.10 = Confident_Taxonomy, Abund.DNA.10 = Abundance, Query)
+
+norB.DNA.100m <- read_tsv("data/dna/norB_DNA_100m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.100 = Confident_Taxonomy, Abund.DNA.100 = Abundance, Query)
+
+norB.DNA.120m <- read_tsv("data/dna/norB_DNA_120m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.120 = Confident_Taxonomy, Abund.DNA.120 = Abundance, Query)
+
+norB.DNA.135m <- read_tsv("data/dna/norB_DNA_135m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.135 = Confident_Taxonomy, Abund.DNA.135 = Abundance, Query)
+
+norB.DNA.150m <- read_tsv("data/dna/norB_DNA_150m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.150 = Confident_Taxonomy, Abund.DNA.150 = Abundance, Query)
+
+norB.DNA.165m <- read_tsv("data/dna/norB_DNA_165m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.165 = Confident_Taxonomy, Abund.DNA.165 = Abundance, Query)
+
+norB.DNA.200m <- read_tsv("data/dna/norB_DNA_200m_marker_contig_map.tsv") %>% 
+  select(Tax.DNA.200 = Confident_Taxonomy, Abund.DNA.200 = Abundance, Query)
+```
+
+```{r loadingRNA}
+norB.RNA.10m <- read_tsv("data/rna/norB_RNA_10m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.10 = Confident_Taxonomy, Abund.RNA.10 = Abundance, Query)
+
+norB.RNA.100m <- read_tsv("data/rna/norB_RNA_100m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.100 = Confident_Taxonomy, Abund.RNA.100 = Abundance, Query)
+
+norB.RNA.120m <- read_tsv("data/rna/norB_RNA_120m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.120 = Confident_Taxonomy, Abund.RNA.120 = Abundance, Query)
+
+norB.RNA.135m <- read_tsv("data/rna/norB_RNA_135m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.135 = Confident_Taxonomy, Abund.RNA.135 = Abundance, Query)
+
+norB.RNA.150m <- read_tsv("data/rna/norB_RNA_150m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.150 = Confident_Taxonomy, Abund.RNA.150 = Abundance, Query)
+
+norB.RNA.165m <- read_tsv("data/rna/norB_RNA_165m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.165 = Confident_Taxonomy, Abund.RNA.165 = Abundance, Query)
+
+norB.RNA.200m <- read_tsv("data/rna/norB_RNA_200m_marker_contig_map.tsv") %>% 
+  select(Tax.RNA.200 = Confident_Taxonomy, Abund.RNA.200 = Abundance, Query)
+```
+
+## Data Preporocessing
+
+Manipulate the data into a single data frame
+
+```{r preprocessing}
+norB.all <- norB.DNA.10m %>% 
+# Combine the data frames will full_join to keep all the data
+  full_join(norB.DNA.100m, by = "Query") %>%
+  full_join(norB.DNA.120m, by = "Query") %>% 
+  full_join(norB.DNA.135m, by = "Query") %>%
+  full_join(norB.DNA.150m, by = "Query") %>% 
+  full_join(norB.DNA.165m, by = "Query") %>% 
+  full_join(norB.DNA.200m, by = "Query") %>% 
+  full_join(norB.RNA.10m, by = "Query") %>%
+  full_join(norB.RNA.100m, by = "Query") %>% 
+  full_join(norB.RNA.120m, by = "Query") %>% 
+  full_join(norB.RNA.135m, by = "Query") %>%
+  full_join(norB.RNA.150m, by = "Query") %>% 
+  full_join(norB.RNA.165m, by = "Query") %>% 
+  full_join(norB.RNA.200m, by = "Query") %>% 
+# Create a taxonomy variable aggregating all taxonomy columns so as to fill in any NAs that might occur. !is.na means "is not NA", so the following says that the Taxonomy data should be taken from Tax.RNA.10 if that is not NA, or else take it from Tax.DNA.10 if that is not NA, or else Tax.RNA.200, etc. until if all are NA, give Taxonomy of "unclassified"
+  mutate(Taxonomy = ifelse(!is.na(Tax.DNA.10), Tax.DNA.10,
+                    ifelse(!is.na(Tax.DNA.100), Tax.DNA.100,
+                    ifelse(!is.na(Tax.DNA.120), Tax.DNA.120,
+                    ifelse(!is.na(Tax.DNA.135), Tax.DNA.135,
+                    ifelse(!is.na(Tax.DNA.150), Tax.DNA.150,
+                    ifelse(!is.na(Tax.DNA.165), Tax.DNA.165,
+                    ifelse(!is.na(Tax.DNA.200), Tax.DNA.200,
+                    ifelse(!is.na(Tax.RNA.10), Tax.RNA.10,
+                    ifelse(!is.na(Tax.RNA.100), Tax.RNA.100,
+                    ifelse(!is.na(Tax.RNA.120), Tax.RNA.120,
+                    ifelse(!is.na(Tax.RNA.135), Tax.RNA.135,
+                    ifelse(!is.na(Tax.RNA.150), Tax.RNA.150,
+                    ifelse(!is.na(Tax.RNA.165), Tax.RNA.165,
+                    ifelse(!is.na(Tax.RNA.200), Tax.RNA.200,
+                           "unclassified"))))))))))))))) %>% 
+# Get rid of the old Tax variables
+  select(-starts_with("Tax.")) %>% 
+# Gather all the abundance data into 1 column 
+  gather("Key", "Abundance", starts_with("Abund")) %>% 
+# Turn the Key into Depth and RNA/DNA variables. We can easily do this because we specifically named these variables with period separation when we loaded in the original data
+  separate(Key, c("Key","Type","Depth_m"), by = ".") %>% 
+# Remove Key variable now that it only contains "Abund". This also serves to reorder the columns so that the very long Query is at the end.
+  select(Depth_m, Type, Abundance, Taxonomy, Query) %>% 
+# Make sure R knows depth is numerical since it came from a character variable
+  mutate(Depth_m = as.numeric(Depth_m)) %>% 
+# Separate Taxonomy into columns so we can plot at different levels
+  separate(Taxonomy, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep="; ")
+```
+
+
+# Results
+
+## Analysis of the DNA abundance of norB with depth \label{sec:community}
+
+```{r}
+plot1<- norB.all %>% 
+# Filter the DNA data
+  filter(Type == "DNA") %>% 
+# Change NAs to "unclassified" at the level you want to plot. Here we will do Genus
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
+  
+ggplot(aes(x = "norB", y = Depth_m)) +
+# Use the size aesthetic to show abundance
+  geom_point(aes(size = Abundance), colour="brown") +
+# Reverse the why axis so depth increases going down
+  scale_y_reverse(lim=c(200,10)) +
+  labs(
+    x = "") +
+  theme_classic()
+
+annotate_figure(plot1, 
+                bottom = text_grob("Figure 1: Abundance of the norB gene (DNA) at different depths", face = "bold", size = 12))
+```
+
+
+## Analysis of similarities between the RNA abundance and the DNA abundance of norB with depth \label{sec:OTUabundance}
+
+
+```{r}
+plot1<- norB.all %>% 
+# Change NAs to "unclassified" at the level you want to plot
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
+
+# Show both RNA and DNA using an x variable  
+ggplot(aes(x = Type, y = Depth_m)) +
+  geom_point(aes(size = Abundance), colour="brown") +
+  scale_y_reverse(lim=c(200,10)) +
+  labs(x = "") +
+  theme_classic()
+
+annotate_figure(plot1, 
+                bottom = text_grob("Figure 2: Abundance of the norB gene (DNA vs. RNA) at different depths", face = "bold", size = 12))
+```
+
+
+## Reconstructing the taxa associated with norB and Analyze variance based on depth, DNA, and RNA \label{sec:richness}
+
+```{r}
+plot1 <- norB.all %>% 
+# Change NAs to "unclassified" at the level you want to plot
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
+  
+ggplot(aes(x = Genus, y = Depth_m)) +
+# Use an ifelse statement to make 0 values into NAs so that they don't show up on the plot
+# Use position_dodge to keep points from overlapping
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance), color = Type), position = position_dodge(0.5)) +
+  scale_y_reverse(lim=c(200,10)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+# Rename legend
+  scale_size_continuous(name = "Abundance")
+
+annotate_figure(plot1, 
+                bottom = text_grob("Figure 3: Abundance of genera with norB (DNA vs. RNA) at different depths", face = "bold", size = 12))
+```
+
+Another way to represent the same figure above:
+
+```{r}
+plot1 <- norB.all %>% 
+# Change NAs to "unclassified" at the level you want to plot
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
+  
+ggplot(aes(x = Genus, y = Depth_m)) +
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance)), color = "brown") +
+  scale_y_reverse(lim=c(200,10)) +
+  facet_wrap(~Type) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_size_continuous(name = "Abundance")
+
+annotate_figure(plot1, 
+                bottom = text_grob("Figure 3a: Abundance of genera with norB (DNA vs. RNA) at different depths", face = "bold", size = 12))
+```
+
+
+## Analysis of the abundance of norB in relation to nitrogen species in Saanich \label{sec:ASVabundances}
+
+```{r}
+load("data/mothur_phyloseq.RData")
+metadata <- data.frame(mothur@sam_data)
+
+plot2 <- metadata %>% 
+# Order the data by depth  
+  arrange(Depth_m) %>% 
+  
+ggplot(aes(x = NO3_uM, y = Depth_m)) +
+  geom_point(aes(x=NO3_uM, y=Depth_m),size=5, alpha=0.7) +
+  geom_path(aes(group = 1)) +
+  scale_y_reverse(limits = c(200,10)) +
+  labs(y = "Depth (m)", x = "NO3_uM")
+
+plot3 <- metadata %>% 
+# Order the data by depth  
+  arrange(Depth_m) %>% 
+  
+ggplot(aes(x = NO2_uM, y = Depth_m)) +
+  geom_point(aes(x=NO2_uM, y=Depth_m),size=5, alpha=0.7) +
+  geom_path(aes(group = 1)) +
+  scale_y_reverse(limits = c(200,10)) +
+  labs(y = "Depth (m)", x = "NO2_uM")
+
+plot4 <- metadata %>% 
+# Order the data by depth  
+  arrange(Depth_m) %>% 
+  
+ggplot(aes(x = N2O_nM, y = Depth_m)) +
+  geom_point(aes(x=N2O_nM, y=Depth_m),size=5, alpha=0.7) +
+  geom_path(aes(group = 1)) +
+  scale_y_reverse(limits = c(200,10)) +
+  labs(y = "Depth (m)", x = "N2O_nM")
+
+annotate_figure(ggarrange(plot2, plot3, plot4, ncol = 3, nrow = 1, 
+                                     labels = c("(a)", "(b)", "(c)")),
+                bottom = text_grob("Figure 4: Abundance of norB in relation to nitrogen species across depths", 
+                                   color = "blue", 
+                                   face = "bold", 
+                                   size = 12))
+```
+
+
+
+# Discussion
+
+---
+
+# References

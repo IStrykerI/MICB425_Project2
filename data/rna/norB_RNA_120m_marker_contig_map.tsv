@@ -1,0 +1,21 @@
+Query	Marker	Taxonomy	Confident_Taxonomy	Abundance	Likelihood	WTD
+scaffold117533	norB	Bacteria; Bacteroidetes; Flavobacteriia; Flavobacteriales; Flavobacteriaceae; Formosa; Formosa agariphila	Bacteria; Bacteroidetes; Flavobacteriia; Flavobacteriales; Flavobacteriaceae; Formosa	0	0.477507	0.0
+scaffold01453	norB	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; unclassified Gammaproteobacteria 	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; unclassified Gammaproteobacteria 	0.0679304	1.0	0.0
+scaffold230736	norB	Bacteria; Proteobacteria	Bacteria; Proteobacteria	0	0.934864	0.15625
+scaffold32806	norB	Bacteria; Proteobacteria; Betaproteobacteria; Neisseriales; Chromobacteriaceae	Bacteria; Proteobacteria; Betaproteobacteria; Neisseriales; Chromobacteriaceae	0.0336102	0.989937	0.05729
+scaffold01391	norB	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; unclassified Gammaproteobacteria 	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; unclassified Gammaproteobacteria 	0.0924918	0.999996	0.0
+scaffold88002	norB	Bacteria; Proteobacteria	Bacteria; Proteobacteria	0	0.989581	0.15625
+scaffold189826	norB	Bacteria; Chlorobi; unclassified Chlorobi	Bacteria; Chlorobi; unclassified Chlorobi	1.09577	0.965366	0.0
+scaffold336482	norB	Bacteria; Proteobacteria; Gammaproteobacteria; Chromatiales; Chromatiaceae; Thiocapsa	Bacteria; Proteobacteria; Gammaproteobacteria; Chromatiales; Chromatiaceae; Thiocapsa	0	0.571754	0.0
+scaffold297314	norB	Bacteria; Bacteroidetes; unclassified Bacteroidetes; unclassified Bacteroidetes 	Bacteria; Bacteroidetes; unclassified Bacteroidetes; unclassified Bacteroidetes 	0	0.290027	0.03516
+scaffold197969	norB	Bacteria; Proteobacteria; Gammaproteobacteria; Pseudomonadales; Pseudomonadaceae	Bacteria; Proteobacteria; Gammaproteobacteria; Pseudomonadales; Pseudomonadaceae	0.408301	0.399746	0.0
+scaffold165452	norB	Bacteria; Proteobacteria; Betaproteobacteria	Bacteria; Proteobacteria; Betaproteobacteria	0	0.300235	0.12601
+scaffold16587	norB	Bacteria; Proteobacteria; Gammaproteobacteria	Bacteria; Proteobacteria; Gammaproteobacteria	0.284127	0.327249	0.10417
+scaffold40249	norB	Bacteria; Proteobacteria; Betaproteobacteria; Neisseriales; Chromobacteriaceae	Bacteria; Proteobacteria; Betaproteobacteria; Neisseriales; Chromobacteriaceae	0	0.523654	0.02344
+scaffold62506	norB	Bacteria; Proteobacteria; Gammaproteobacteria	Bacteria; Proteobacteria; Gammaproteobacteria	0	0.327249	0.10417
+scaffold32807	norB	Bacteria; Proteobacteria; Betaproteobacteria; Neisseriales; Chromobacteriaceae	Bacteria; Proteobacteria; Betaproteobacteria; Neisseriales; Chromobacteriaceae	0.100831	0.986739	0.05729
+scaffold03389	norB	Bacteria; Proteobacteria	Bacteria; Proteobacteria	1.57806	0.999073	0.23793
+scaffold174689	norB	Bacteria; Chlorobi; unclassified Chlorobi	Bacteria; Chlorobi; unclassified Chlorobi	1.99575	0.559062	0.0
+scaffold02441	norB	Bacteria; Proteobacteria	Bacteria; Proteobacteria	0.114935	0.710017	0.15625
+scaffold04547	norB	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; unclassified Gammaproteobacteria 	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; unclassified Gammaproteobacteria 	0	0.999771	0.0
+scaffold00171	norB	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; Competibacteraceae; Candidatus Competibacter; Candidatus Competibacter denitrificans	Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; Competibacteraceae; Candidatus Competibacter	2.29434	0.871045	0.0
