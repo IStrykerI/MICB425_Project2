@@ -79,9 +79,9 @@ To understand the correlation of microbial diversity and oxygen concentration ac
 
 **P1.** Analysis of the DNA abundance of norB with depth.
 
-**P2.** Analysis of similarities between the RNA abundance and the DNA abundance of norB with depth.
+**P2.** Analysis of similarities between RNA and DNA abundance information of norB with depths.
 
-**P3.** Reconstructing the taxa associated with norB and Analyze variance based on depth, DNA, and RNA.
+**P3.** Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths.
 
 **P4.** Analysis of the abundance of norB in relation to nitrogen species in Saanich.
 
@@ -89,6 +89,8 @@ To understand the correlation of microbial diversity and oxygen concentration ac
 ## Dataset
 
 ```{r loadingDNA}
+
+## DNA
 norB.DNA.10m <- read_tsv("data/dna/norB_DNA_10m_marker_contig_map.tsv") %>% 
   select(Tax.DNA.10 = Confident_Taxonomy, Abund.DNA.10 = Abundance, Query)
 
@@ -109,9 +111,8 @@ norB.DNA.165m <- read_tsv("data/dna/norB_DNA_165m_marker_contig_map.tsv") %>%
 
 norB.DNA.200m <- read_tsv("data/dna/norB_DNA_200m_marker_contig_map.tsv") %>% 
   select(Tax.DNA.200 = Confident_Taxonomy, Abund.DNA.200 = Abundance, Query)
-```
 
-```{r loadingRNA}
+## RNA
 norB.RNA.10m <- read_tsv("data/rna/norB_RNA_10m_marker_contig_map.tsv") %>% 
   select(Tax.RNA.10 = Confident_Taxonomy, Abund.RNA.10 = Abundance, Query)
 
@@ -210,8 +211,29 @@ annotate_figure(plot1,
 ```
 
 
-## Analysis of similarities between the RNA abundance and the DNA abundance of norB with depth \label{sec:OTUabundance}
+## Analysis of similarities between RNA and DNA abundance information of norB with depths \label{sec:OTUabundance}
 
+```{r}
+abun.dna.by.phylum <- norB.all %>%
+  filter(Type == "DNA") %>% 
+  mutate(Abundance = ifelse(is.na(Abundance), 0, Abundance)) %>%
+  group_by(Phylum, Genus) %>% 
+  summarise(Abundance = sum(Abundance))
+
+abun.dna.by.phylum.nonNA <- abun.dna.by.phylum %>%
+  filter(!is.na(Genus))
+
+abun.rna.by.phylum <- norB.all %>%
+  filter(Type == "RNA") %>% 
+  mutate(Abundance = ifelse(is.na(Abundance), 0, Abundance)) %>%
+  group_by(Phylum, Genus) %>% 
+  summarise(Abundance = sum(Abundance))
+
+abun.rna.by.phylum.nonNA <- abun.rna.by.phylum %>%
+  filter(!is.na(Genus))
+```
+
+The total abundances computed from DNA and RNA data is `r sum(abun.dna.by.phylum$Abundance)` and `r sum(abun.rna.by.phylum$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.phylum.nonNA$Abundance))/sum(abun.dna.by.phylum$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.phylum.nonNA$Abundance))/sum(abun.rna.by.phylum$Abundance) * 100`$\%$ have known taxa for both DNA and RNA.
 
 ```{r}
 plot1<- norB.all %>% 
@@ -230,7 +252,7 @@ annotate_figure(plot1,
 ```
 
 
-## Reconstructing the taxa associated with norB and Analyze variance based on depth, DNA, and RNA \label{sec:richness}
+## Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths \label{sec:richness}
 
 ```{r}
 plot1 <- norB.all %>% 
