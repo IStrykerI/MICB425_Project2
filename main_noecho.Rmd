@@ -15,15 +15,15 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 header-includes:
    - \newcommand*{\secref}[1]{Section~\ref{#1}}
 output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
   pdf_document:
     toc: yes
     toc_depth: 3
     number_sections: yes
     fig_caption: true
-  html_document:
-    toc: yes
-    toc_float:
-      collapsed: no
 mainfont: Times
 fontsize: 11 pt
 editor_options:
@@ -89,7 +89,6 @@ To understand the correlation of microbial diversity and oxygen concentration ac
 ## Dataset
 
 ```{r loadingDNA}
-
 ## DNA
 norB.DNA.10m <- read_tsv("data/dna/norB_DNA_10m_marker_contig_map.tsv") %>% 
   select(Tax.DNA.10 = Confident_Taxonomy, Abund.DNA.10 = Abundance, Query)
@@ -180,122 +179,173 @@ norB.all <- norB.DNA.10m %>%
 # Remove Key variable now that it only contains "Abund". This also serves to reorder the columns so that the very long Query is at the end.
   select(Depth_m, Type, Abundance, Taxonomy, Query) %>% 
 # Make sure R knows depth is numerical since it came from a character variable
-  mutate(Depth_m = as.numeric(Depth_m)) %>% 
-# Separate Taxonomy into columns so we can plot at different levels
+  mutate(Depth_m = as.numeric(Depth_m)) %>%
+  # Make sure to impute missing abundant information by setting it to 0
+  mutate(Abundance = ifelse(is.na(Abundance), 0, Abundance)) %>%
+  # Separate Taxonomy into columns so we can plot at different levels
   separate(Taxonomy, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep="; ")
 ```
 
+```{r normalize}
+# Also, normalize abundance information relative based on DNA or RNA 
+norB.all.norm <- norB.all %>% 
+  group_by(Type) %>%
+  mutate(Abundance = ifelse(Abundance==0, 0, Abundance/sum(Abundance))) %>%
+  ungroup()
+```
 
 # Results
 
 ## Analysis of the DNA abundance of norB with depth \label{sec:community}
 
 ```{r}
-plot1<- norB.all %>% 
-# Filter the DNA data
+abun.dna.by.depth <- norB.all %>% 
+  filter(Type=="DNA") %>%
+  group_by(Depth_m) %>%
+  summarise(Abundance_DNA=sum(Abundance))
+
+kable(abun.dna.by.depth,caption="Unnormalized abundance of the norB gene (DNA) at different depths")
+```
+
+```{r figure1}
+plot1 <- norB.all.norm %>% 
+  # Filter the DNA data
   filter(Type == "DNA") %>% 
-# Change NAs to "unclassified" at the level you want to plot. Here we will do Genus
+  # Change NAs to "unclassified" at the level you want to plot. Here we will do Genus
   mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
-  
-ggplot(aes(x = "norB", y = Depth_m)) +
-# Use the size aesthetic to show abundance
-  geom_point(aes(size = Abundance), colour="brown") +
-# Reverse the why axis so depth increases going down
+
+  ggplot(aes(x = "norB", y = Depth_m)) +
+  # Use the size aesthetic to show abundance
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100)), colour="brown") +
+  # Reverse the why axis so depth increases going down
   scale_y_reverse(lim=c(200,10)) +
-  labs(
-    x = "") +
+  scale_size("Norm. relative abundance (%)") + 
+  labs(x = "", y="Depth (m)") +
   theme_classic()
 
-annotate_figure(plot1, 
-                bottom = text_grob("Figure 1: Abundance of the norB gene (DNA) at different depths", face = "bold", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 1: Normalized relative abundance (0-1) of the norB gene (DNA) at different depths", size = 12))
 ```
 
 
 ## Analysis of similarities between RNA and DNA abundance information of norB with depths \label{sec:OTUabundance}
 
 ```{r}
-abun.dna.by.phylum <- norB.all %>%
-  filter(Type == "DNA") %>% 
-  mutate(Abundance = ifelse(is.na(Abundance), 0, Abundance)) %>%
-  group_by(Phylum, Genus) %>% 
-  summarise(Abundance = sum(Abundance))
+abun.rna.by.depth <- norB.all %>% 
+  filter(Type=="RNA") %>%
+  group_by(Depth_m) %>%
+  summarise(Abundance_RNA=sum(Abundance))
 
-abun.dna.by.phylum.nonNA <- abun.dna.by.phylum %>%
-  filter(!is.na(Genus))
-
-abun.rna.by.phylum <- norB.all %>%
-  filter(Type == "RNA") %>% 
-  mutate(Abundance = ifelse(is.na(Abundance), 0, Abundance)) %>%
-  group_by(Phylum, Genus) %>% 
-  summarise(Abundance = sum(Abundance))
-
-abun.rna.by.phylum.nonNA <- abun.rna.by.phylum %>%
-  filter(!is.na(Genus))
+abun.by.depth <- full_join(x = abun.dna.by.depth, 
+                           y = abun.rna.by.depth, 
+                           by = "Depth_m")
+kable(abun.by.depth, caption="Unnormalized abundance of the norB gene (DNA vs. RNA) at different depths")
 ```
 
-The total abundances computed from DNA and RNA data is `r sum(abun.dna.by.phylum$Abundance)` and `r sum(abun.rna.by.phylum$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.phylum.nonNA$Abundance))/sum(abun.dna.by.phylum$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.phylum.nonNA$Abundance))/sum(abun.rna.by.phylum$Abundance) * 100`$\%$ have known taxa for both DNA and RNA.
-
-```{r}
-plot1<- norB.all %>% 
+```{r figure2}
+plot1<- norB.all.norm %>% 
 # Change NAs to "unclassified" at the level you want to plot
   mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
-
-# Show both RNA and DNA using an x variable  
-ggplot(aes(x = Type, y = Depth_m)) +
-  geom_point(aes(size = Abundance), colour="brown") +
-  scale_y_reverse(lim=c(200,10)) +
-  labs(x = "") +
+  # Show both RNA and DNA using an x variable  
+  ggplot(aes(x = Type, y = Depth_m)) +
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100)), colour="brown") +
+  scale_y_reverse(lim=c(200, 10)) +
+  # Remove zeros by setting min limit to 1e-09
+  scale_size("Norm. relative abundance (%)") + 
+  labs(x = "", y="Depth (m)") +
   theme_classic()
 
-annotate_figure(plot1, 
-                bottom = text_grob("Figure 2: Abundance of the norB gene (DNA vs. RNA) at different depths", face = "bold", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 2: Normalized relative abundance (0-1) of the norB gene (DNA vs. RNA) at different depths", size = 12))
 ```
 
 
 ## Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths \label{sec:richness}
 
 ```{r}
-plot1 <- norB.all %>% 
+abun.by.phylum <- norB.all %>%
+  group_by(Type, Phylum, Genus) %>%
+  summarise(Abundance = sum(Abundance)) %>%
+  ungroup()
+
+## DNA
+abun.dna.by.phylum <- abun.by.phylum %>%
+  filter(Type=="DNA")
+abun.dna.by.phylum.nonNA <- abun.dna.by.phylum %>%
+  filter(!is.na(Genus))
+
+## RNA 
+abun.rna.by.phylum <- abun.by.phylum %>%
+  filter(Type == "RNA")
+abun.rna.by.phylum.nonNA <- abun.rna.by.phylum %>%
+  filter(!is.na(Genus))
+
+## Join DNA and RNA
+abun.by.phylum <- abun.dna.by.phylum %>% 
+  select(Phylum, Genus, Abundance_DNA = Abundance) %>%
+  mutate(Abundance_RNA = abun.rna.by.phylum$Abundance)
+
+kable(abun.by.phylum, caption="Taxa associated (including NA values) with unnormalized abundance of the norB gene (DNA vs. RNA) at all depths")
+```
+
+The total unnormalized abundances computed from DNA and RNA data is `r sum(abun.dna.by.phylum$Abundance)` and `r sum(abun.rna.by.phylum$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.phylum.nonNA$Abundance))/sum(abun.dna.by.phylum$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.phylum.nonNA$Abundance))/sum(abun.rna.by.phylum$Abundance) * 100`$\%$ have known genera for both DNA and RNA. We impute ``NA`` with ``unclassified`` for phylum and genus. 
+
+<!-- ![Distribution of Species from DNA at 10m depth of Saanich Inlet](final_trees/dna/norB_DNA_10m.pdf){width=60%} -->
+
+<!-- ![Distribution of Species from DNA at 100m depth of Saanich Inlet](final_trees/dna/norB_DNA_100m.pdf){width=60%} -->
+
+<!-- ![Distribution of Species from DNA at 120m depth of Saanich Inlet](final_trees/dna/norB_DNA_120m.pdf){width=60%} -->
+
+<!-- ![Distribution of Species from DNA at 135m depth of Saanich Inlet](final_trees/dna/norB_DNA_135m.pdf){width=60%} -->
+
+<!-- ![Distribution of Species from DNA at 150m depth of Saanich Inlet](final_trees/dna/norB_DNA_150m.pdf){width=60%} -->
+
+<!-- ![Distribution of Species from DNA at 165m depth of Saanich Inlet](final_trees/dna/norB_DNA_165m.pdf){width=60%} -->
+
+<!-- ![Distribution of Species from DNA at 200m depth of Saanich Inlet](final_trees/dna/norB_DNA_200m.pdf){width=60%} -->
+
+
+```{r figure3}
+plot1 <- norB.all.norm %>% 
+# Change NAs to "unclassified" at the level you want to plot
+  mutate(Phylum = ifelse(is.na(Phylum), "unclassified", Phylum)) %>% 
+  
+ggplot(aes(x = Phylum, y = Depth_m)) +
+# Use an ifelse statement to make 0 values into NAs so that they don't show up on the plot
+# Use position_dodge to keep points from overlapping
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100), color = Type),
+             position = position_dodge(0.5)) +
+  scale_y_reverse(lim=c(200,10)) +
+  scale_size("Norm. relative abundance (%)") + 
+  labs(x = "", y="Depth (m)") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+annotate_figure(plot1, bottom = text_grob("Figure 3: Abundance of Phyla with norB (DNA vs. RNA) at different depths", size = 12))
+```
+
+
+```{r figure4}
+plot1 <- norB.all.norm %>% 
 # Change NAs to "unclassified" at the level you want to plot
   mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
   
 ggplot(aes(x = Genus, y = Depth_m)) +
 # Use an ifelse statement to make 0 values into NAs so that they don't show up on the plot
 # Use position_dodge to keep points from overlapping
-  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance), color = Type), position = position_dodge(0.5)) +
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100), color = Type),
+             position = position_dodge(0.5)) +
   scale_y_reverse(lim=c(200,10)) +
+  scale_size("Norm. relative abundance (%)") + 
+  labs(x = "", y="Depth (m)") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-# Rename legend
-  scale_size_continuous(name = "Abundance")
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-annotate_figure(plot1, 
-                bottom = text_grob("Figure 3: Abundance of genera with norB (DNA vs. RNA) at different depths", face = "bold", size = 12))
-```
-
-Another way to represent the same figure above:
-
-```{r}
-plot1 <- norB.all %>% 
-# Change NAs to "unclassified" at the level you want to plot
-  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
-  
-ggplot(aes(x = Genus, y = Depth_m)) +
-  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance)), color = "brown") +
-  scale_y_reverse(lim=c(200,10)) +
-  facet_wrap(~Type) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_size_continuous(name = "Abundance")
-
-annotate_figure(plot1, 
-                bottom = text_grob("Figure 3a: Abundance of genera with norB (DNA vs. RNA) at different depths", face = "bold", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of genera with norB (DNA vs. RNA) at different depths", size = 12))
 ```
 
 
 ## Analysis of the abundance of norB in relation to nitrogen species in Saanich \label{sec:ASVabundances}
 
-```{r}
+```{r figure5}
 load("data/mothur_phyloseq.RData")
 metadata <- data.frame(mothur@sam_data)
 
@@ -331,12 +381,8 @@ ggplot(aes(x = N2O_nM, y = Depth_m)) +
 
 annotate_figure(ggarrange(plot2, plot3, plot4, ncol = 3, nrow = 1, 
                                      labels = c("(a)", "(b)", "(c)")),
-                bottom = text_grob("Figure 4: Abundance of norB in relation to nitrogen species across depths", 
-                                   color = "blue", 
-                                   face = "bold", 
-                                   size = 12))
+                bottom = text_grob("Figure 5: Abundance of norB in relation to nitrogen species across depths", size = 12))
 ```
-
 
 
 # Discussion
