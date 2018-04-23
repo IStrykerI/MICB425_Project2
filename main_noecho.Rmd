@@ -9,8 +9,7 @@ author:
   - Tiffany Yang
   - Abdur Rahman M. A. Basher
 abstract: |
-  This is the abstract.
-  It consists of two paragraphs.
+  Recent developments of high-throughput sequencing and various bioinformatics platforms have provided us with further understand of microbial functions on an ecological scale, including microbes’ roles in global biogeochemical cycles. In particular, the analyses have provided us great insights and answers to important questions: which microbes are present, what are they doing, and how do they respond to changes in a given environment? Here, we use DNA and RNA sequence data to examine the nitrogen cycle in Saanich Inlet – which is an intermittently anoxic fjord and also a suitable model to study microbial community responses to changes in oxygen level. Although there are several well-defined gene encoding key steps in the nitrogen cycle, the primary investigation of this report focuses on the nitric oxide reductase, *norB*, and its abundance at multiple depths in Saanich Inlet. Through a new software pipeline, TreeSAPP, we found that DNA abundance of *norB* followed an upward trend, increasing from 2.5% at depth 100m to 10.0% at depth 200m. Similarly, RNA abundance was observed to increase from 5% at depth 150m to 15% at depth 200m. The resulting trees from TreeSAPP identified the different genera responsible for the presence of *norB* belonging to the Phyla Bacteriodetes, Chlorobi and Proteobacteria. While our results unveiled the abundance of *norB* at various depths in Saanich, the methods we used can be extended to other genes of interest in an effort to further examine the biogeochemical processes and predict microbial responses to changes or disturbances in an environment.
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 header-includes:
    - \newcommand*{\secref}[1]{Section~\ref{#1}}
@@ -71,19 +70,17 @@ scale_fill_discrete <-  function(palname=pal, ...){
 ```
 
 * * *
-# Abstract
-
-Recent developments of high-throughput sequencing and various bioinformatics platforms have provided us with further understand of microbial functions on an ecological scale, including microbes’ roles in global biogeochemical cycles. In particular, the analyses of different sequence information (i.e. DNA and RNA) have provided us great insights and answers to important questions: which microbes are present, what are they doing, and how do they respond to changes in a given environment? Here, we use DNA and RNA sequence data to examine the nitrogen cycle in Saanich Inlet – which is an intermittently anoxic fjord and also a suitable model to study microbial community responses to changes in oxygen level. Although there are several well-defined gene encoding key steps in the nitrogen cycle, the primary investigation of this report focuses on the nitric oxide reductase, *norB*, and its abundance at multiple depths in Saanich Inlet. Through a new software pipeline, TreeSAPP, we found that DNA abundance of *norB* followed an upward trend, increasing from 2.5% at depth 100m to 10.0% at depth 200m. Similarly, RNA abundance was observed to increase from 5% at depth 150m to 15% at depth 200m. The resulting trees from TreeSAPP identified the different genera responsible for the presence of *norB* belonging to the Phyla Bacteriodetes, Chlorobi and Proteobacteria. While our results unveiled the abundance of *norB* at various depths in Saanich, the methods we used can be extended to other genes of interest in an effort to further examine the biogeochemical processes and predict microbial responses to changes or disturbances in an environment.
-
 # Introduction
 
-Saanich Inlet, located in southeastern Vancouver Island, is an intermittently anoxic fjord, and therefore an ideal model to seasonally study microbial community responses to ocean deoxygenation (1, 2). Established by the shallow sill opening to the Strait of Georgia, circulation of basin water in Saanich Inlet is reduced. Together with poor ventilation and intense downward flux of organic matter by aerobically respiring organisms living on surface waters (3), oxygen levels down the inlet water column decreases followed by changes in nutrient availability. With the lack of oxygen, microbes turn to use alternative terminal electron acceptors such as nitrate, followed by hydrogen sulfide which is developed at the bottom of the water column (4). Thus, these oxygen-deprived regions, termed as oxygen minimum zones (OMZs), post a diverse microbial community that mediate important biogeochemical processes such the nitrogen cycle (4). Since OMZs provide appropriate conditions to enable substantial nitrogen loss, we aim to reassemble the nitrogen cycle in Saanich Inlet to study the microbial community responses to varying levels of oxygen deficiency with specific emphasis on the denitrification pathway.
+Saanich Inlet, located in southeastern Vancouver Island, is a seasonally anoxic fjord and therefore an ideal model to study microbial community responses to ocean deoxygenation (1, 2). Established by the shallow sill opening to the Strait of Georgia, circulation of basin water in Saanich Inlet is reduced. Together with poor ventilation and intense downward flux of organic matter by aerobically respiring organisms living on surface waters (3), oxygen levels down the inlet water column decreases followed by changes in nutrient availability. With the lack of oxygen, microbes turn to use alternative terminal electron acceptors such as nitrate, followed by hydrogen sulfide which is developed at the bottom of the water column (4). Thus, these oxygen-deprived regions, termed as oxygen minimum zones (OMZs), post a diverse microbial community that mediate important biogeochemical processes such the nitrogen cycle (4). Since OMZs provide appropriate conditions to enable substantial nitrogen loss, we aim to reassemble the nitrogen cycle in Saanich Inlet to study the microbial community responses to varying levels of oxygen deficiency with specific emphasis on the denitrification pathway.
 
 **The Nitrogen Cycle**
 
 Nitrogen is the fourth most abundant element in the cellular biomass (5). Microbial activities entirely control the interchange between the inert N~2~ gas in the atmosphere to usable nitrogen that can support cellular metabolism and growth (5). The nitrogen cycle consists of four significant nitrogen-transformation flows: ammonification, nitrification, denitrification, anammox (5). Ammonification, includes nitrogen fixation, where N~2~ is reduced to ammonium by bacteria and archaea that encode nitrogenase enzyme, and also the assimilatory and dissimilatory reduction of nitrate to ammonium (5). It should be noted that nitrogen fixation is an oxygen sensitive process as nitrogenase enzyme is inhibited by oxygen (6). Nitrification is the process of oxidation of ammonia to nitrite, and further oxidation of nitrite to nitrate (5). Denitrification is the process of dissimilatory reduction of nitrate (NO~3~^-^) and nitrite (NO~2~^-^) to the gaseous oxides, nitric oxide (NO), and nitrous oxide (N~2~O), which may further get reduced to dinitrogen gas (N~2~) (5). In anaerobic ammonium oxidation commonly abbreviated as anammox, the pools of nitrite (N~2~O^-^) and ammonium (NH~4~^+^) are utilized to form N~2~ (5). Anammox is used for wastewater treatment, as it removes both ammonium and nitrite simultaneously without producing N~2~O (5).
 
-The denitrification process post great importance in the global nitrogen balance. It returns the nitrogen into the atmosphere and maintains homeostasis between the nitrogen content of soil and air. (8). The four enzymes of denitrification are: nitrate, nitrite, nitric oxide and nitrous oxide reductase which are encoded by *nar*, *nir*, *nor*, and *nos*, respectively (9). Denitrification takes place in aquatic, marine, and terrestrial ecosystems, and the rate of this process is affected by various factors such as pH, temperature, and oxygen concentration (8). In OMZs, nitrate (NO~3~^-^) and nitrite (NO~2~^-^) act as the main terminal electron acceptors in respiration (10). Nitrogen oxide reductases are sensitive to oxygen and it is known that oxygen represses denitrification (8). Among the four N-oxide reductases, nitrous oxide reductase is the most sensitive enzyme to oxygen, leading to the increase in N~2~O production in the suboxic and anoxic conditions (10). The interest in denitrification process is for several reasons. Denitrification is the process contributing to the loss of fertilizer nitrogen, therefore reducing the agriculture productivity (7). Additionally, denitrification can be utilized to remove nitrogen from high-nitrate wastewaters to decrease the contamination and eutrophication (7). However, denitrification can have negative effects on the climate system, as the emission of N~2~O leads to stratospheric ozone layer depletion, contributing to global warming (7). Some of the major denitrifying bacteria are from genera: *Alcaligenes*, *Agrobacterium*, *Bacillus*, *Hyphomicrobium*, *Moraxella*, *Pseudomonas*, and *Paracoccus* (7). Due to the high frequency of isolation, the genera *Pseudomonas* and *Alcaligenes* are of the greatest significance (4).
+![Nitrogen Cycle](N_Cycle_Figure.png)
+
+The denitrification process plays an integral role in the global nitrogen balance. It returns the nitrogen into the atmosphere and maintains homeostasis between the nitrogen content of soil and air. (8). The four enzymes of denitrification are: nitrate, nitrite, nitric oxide and nitrous oxide reductase which are encoded by *nar*, *nir*, *nor*, and *nos*, respectively (9). Denitrification takes place in aquatic, marine, and terrestrial ecosystems, and the rate of this process is affected by various factors such as pH, temperature, and oxygen concentration (8). In OMZs, nitrate (NO~3~^-^) and nitrite (NO~2~^-^) act as the main terminal electron acceptors in respiration (10). Nitrogen oxide reductases are sensitive to oxygen and it is known that oxygen represses denitrification (8). Among the four N-oxide reductases, nitrous oxide reductase is the most sensitive enzyme to oxygen, leading to the increase in N~2~O production in the suboxic and anoxic conditions (10). The interest in denitrification process is for several reasons. Denitrification is the process contributing to the loss of fertilizer nitrogen, therefore reducing the agriculture productivity (7). Additionally, denitrification can be utilized to remove nitrogen from high-nitrate wastewaters to decrease the contamination and eutrophication (7). However, denitrification can have negative effects on the climate system, as the emission of N~2~O leads to stratospheric ozone layer depletion, contributing to global warming (7). Some of the major denitrifying bacteria are from genera: *Alcaligenes*, *Agrobacterium*, *Bacillus*, *Hyphomicrobium*, *Moraxella*, *Pseudomonas*, and *Paracoccus* (7). Due to the high frequency of isolation, the genera *Pseudomonas* and *Alcaligenes* are of the greatest significance (4).
 
 The objective of this project is to reassemble the nitrogen cycle as a distributed metabolic process which may provide new insight into the roles that microbes play on nutrient and energy fluxes in the ocean. There are several well-defined gene encoding key steps in the nitrogen cycle and they serve as basis for functional anchor screening to determine their distribution across the Tree of Life. Here, we focused on the nitric oxide reductase, *norB*, and we examined its DNA and RNA abundance across the different depths in Saanich Inlet. We also investigated how the nitrogen species in Saanich relate to the abundances of *norB*.
 
@@ -211,7 +208,7 @@ norB.all.norm <- norB.all %>%
 
 ## Methods
 
-Sequences for norB were obtained from various depths at Saanich Inlet. Listed below are the method of processing the tree-based sensitive and accurate protein profiler (TreeSAPP):
+Sequences for *norB* were obtained from various depths at Saanich Inlet. Listed below are the method of processing the tree-based sensitive and accurate protein profiler (TreeSAPP):
 
 1)     The query sequences were first mapped to the reference sequences in BLASTp.
 2)     Coding sequences were then extracted and queried with putative functions
@@ -220,7 +217,13 @@ Sequences for norB were obtained from various depths at Saanich Inlet. Listed be
 5)     Reference trees were then updated with novel sequences
 6)     Construction of trees at various depths with Interactive Tree of Life (iTOL)
 
-Majority of TreeSAPP pipeline was run on Google Cloud for metagenomic (MetaG, DNA) and metatranscriptomic (MetaT, RNA) assemblies of norB gene at the depths of 10m, 100m, 120m, 135m, 150m, 165m, and 200m. The following codes below were used in the pipeline:
+Majority of TreeSAPP pipeline was run on Google Cloud for metagenomic (MetaG, DNA) and metatranscriptomic (MetaT, RNA) assemblies of norB gene at the depths of 10m, 100m, 120m, 135m, 150m, 165m, and 200m. Reads per kilo base per million mapped reads (RPKM) was used for normalization when comparing the gene converage values, which corrected differences in sampling sequencing depth and gene length (16). The formula used in RPKM is indicated below:
+
+RPKM = numReads / (geneLength/1000 * totalNumReads/1,000,000)
+
+Where numReads was the number of reads mapped to a gene sequence, geneLength was the length of the gene sequence, and totalNumReads was the total number of mapped reads of a sample.
+
+The following codes below were used in the pipeline (15). More information can be obtained from the TreeSAPP Demo on Github:
 
 time treesapp.py -T 8 --verbose --delete --pairing pe \
 Various functions were stated with the following line above for: Tracking the runtime, specifying the maximum number of threads (8) to be used for efficiency, printing the intermediate steps, deleting the intermediate files to reduce the storage space occupied, and lastly specifying the usage of paired end files for comparing our data.
@@ -234,15 +237,15 @@ Input files and path to store files was specified with the following line above.
 -r bucket/MetaG_reads/depth#.fastq.gz \
 The input files for MetaG and MetaT reads were also specified above.
 
--o treesapp_out_dir_depth#
+-o treesapp_out_dir_depth#  
 Output file name was specified above.
 
-rm treesapp_out_dir_depth1/RPKM_outputs/*.sam
+rm treesapp_out_dir_depth1/RPKM_outputs/*.sam  
 Last instruction here was used to remove gigabyte size intermediate SAM files.
 
 Visualization of output files at various depths were done on iTOL v4 for *norB* gene.
 
-Using the processed results, DNA abundance and RNA abundance analyses were done for *norB* at multiple depths (Fig. 1 and Fig. 2). In addition, various genera were also compared in regards to their DNA vs. RNA abundances to determine the expression of *norB* for each genus at different depths (Fig. 3a and Fib 3b). Lastly, the relationship of abundance of *norB* and concentration of several nitrogen species – such as nitrate, nitrogen dioxide, and nitrous oxide – were also observed (Fig. 4).
+Using the processed results, DNA abundance and RNA abundance analyses were done for *norB* at multiple depths (Fig. 2 and Fig. 3). In addition, various genera were also compared in regards to their DNA vs. RNA abundances to determine the expression of *norB* for each genus at different depths (Fig. 4a and Fib 4b). Lastly, the relationship of abundance of *norB* and concentration of several nitrogen species – such as nitrate, nitrogen dioxide, and nitrous oxide – were also observed (Fig. 5).
 
 # Results
 
@@ -254,7 +257,7 @@ abun.dna.by.depth <- norB.all %>%
   group_by(Depth_m) %>%
   summarise(Abundance_DNA=sum(Abundance))
 
-kable(abun.dna.by.depth,caption="Unnormalized abundance of the norB gene (DNA) at different depths")
+kable(abun.dna.by.depth,caption="Normalized abundance of the norB gene (DNA) at different depths by RPKM")
 ```
 
 ```{r figure1}
@@ -273,10 +276,10 @@ plot1 <- norB.all.norm %>%
   labs(x = "", y="Depth (m)") +
   theme_classic()
 
-annotate_figure(plot1, bottom = text_grob("Figure 1: Normalized relative abundance (0-1) of norB gene (DNA) at different depths", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 2: Normalized relative abundance (0-1) of norB gene (DNA) at different depths", size = 12))
 ```
 
-The DNA abundance of the *norB* followed an upwards trend where it increased from a normalized relative abundance of 2.5% at depth 100m to 10.0% at depth 200m. This was consistent with what had been shown in previous studies, where genes associated with partial denitrification to nitrous oxide were most abundant at a depth of 150m (11) and were not present at depth 50m. An exception of this trend occurs at depth 165 meters, where the abundance declined sharply. Since the gene encodes the nitric oxide reductase enzyme—responsible for the reduction of nitric oxide to nitrous oxide—the microbes possessing these genes would be considered partial denitrifiers. It is likely that conditions at lower depths have conditions that are more ideal for partial denitrifiers, which would explain why the gene’s presence is more abundance at lower depths. Depth 165m could be less ideal for microbial growth because it sits between the sulfide nitrate transition zone (SNTZ) and the sulfide zone. 
+The DNA abundance of the *norB* followed an upwards trend where it increased from a normalized relative abundance of 2.5% at depth 100m to 10.0% at depth 200m. This was consistent with what had been shown in previous studies, where genes associated with partial denitrification to nitrous oxide were most abundant at a depth of 150m (11) and were not present at depth 50m. An exception of this trend occurs at depth 165 meters, where the abundance declined sharply. Since the gene encodes the nitric oxide reductase enzyme—responsible for the reduction of nitric oxide to nitrous oxide—the microbes possessing these genes would be considered partial denitrifiers. It is likely that conditions at lower depths are more ideal for partial denitrifiers, which would explain why the gene’s presence is more abundance at lower depths. Depth 165m could be less ideal for microbial growth because it sits between the sulfide nitrate transition zone (SNTZ) and the sulfide zone. 
 
 ## Analysis of similarities between RNA and DNA abundance information of *norB* with depths \label{sec:OTUabundance}
 
@@ -289,7 +292,7 @@ abun.rna.by.depth <- norB.all %>%
 abun.by.depth <- full_join(x = abun.dna.by.depth, 
                            y = abun.rna.by.depth, 
                            by = "Depth_m")
-kable(abun.by.depth, caption="Unnormalized abundance of norB gene (DNA vs. RNA) at different depths")
+kable(abun.by.depth, caption="Normalized abundance of norB gene (DNA vs. RNA) at different depths by RPKM")
 ```
 
 ```{r figure2}
@@ -305,7 +308,7 @@ plot1<- norB.all.norm %>%
   labs(x = "", y="Depth (m)") +
   theme_classic()
 
-annotate_figure(plot1, bottom = text_grob("Figure 2: Normalized relative abundance (0-1) of norB gene (DNA vs. RNA) at different depths", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 3: Normalized relative abundance (0-1) of norB gene (DNA vs. RNA) at different depths", size = 12))
 ```
 
 The RNA abundance of the norB gene also seemed to follow a similar linear trend like its DNA abundance. It has a normalized relative abundance of 5% at depth 150m and it increased to 15% at depth 200m. This was expected since Hawley *et al.* (12) observed that expressed pathways progressed from ammonia oxidation and nitrification at higher depths to denitrification at lower depths.
@@ -313,32 +316,32 @@ The RNA abundance of the norB gene also seemed to follow a similar linear trend 
 ## Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths \label{sec:richness}
 
 ```{r}
-abun.by.phylum <- norB.all %>%
-  group_by(Type, Phylum, Genus) %>%
+abun.by.class <- norB.all %>%
+  group_by(Type, Class, Genus) %>%
   summarise(Abundance = sum(Abundance)) %>%
   ungroup()
 
 ## DNA
-abun.dna.by.phylum <- abun.by.phylum %>%
+abun.dna.by.class <- abun.by.class %>%
   filter(Type=="DNA")
-abun.dna.by.phylum.nonNA <- abun.dna.by.phylum %>%
+abun.dna.by.class.nonNA <- abun.dna.by.class %>%
   filter(!is.na(Genus))
 
 ## RNA 
-abun.rna.by.phylum <- abun.by.phylum %>%
+abun.rna.by.class <- abun.by.class %>%
   filter(Type == "RNA")
-abun.rna.by.phylum.nonNA <- abun.rna.by.phylum %>%
+abun.rna.by.class.nonNA <- abun.rna.by.class %>%
   filter(!is.na(Genus))
 
 ## Join DNA and RNA
-abun.by.phylum <- abun.dna.by.phylum %>% 
-  select(Phylum, Genus, Abundance_DNA = Abundance) %>%
-  mutate(Abundance_RNA = abun.rna.by.phylum$Abundance)
+abun.by.class <- abun.dna.by.class %>% 
+  select(Class, Genus, Abundance_DNA = Abundance) %>%
+  mutate(Abundance_RNA = abun.rna.by.class$Abundance)
 
-kable(abun.by.phylum, caption="Taxa associated (including NA values) with unnormalized abundance of norB gene (DNA vs. RNA) at all depths")
+kable(abun.by.class, caption="Taxa associated (including NA values) with normalized abundance of norB gene (DNA vs. RNA) at all depths by RPKM")
 ```
 
-The total unnormalized abundances computed from DNA and RNA data is `r sum(abun.dna.by.phylum$Abundance)` and `r sum(abun.rna.by.phylum$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.phylum.nonNA$Abundance))/sum(abun.dna.by.phylum$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.phylum.nonNA$Abundance))/sum(abun.rna.by.phylum$Abundance) * 100`$\%$ have known genera for both DNA and RNA. We impute ``NA`` with ``unclassified`` for phylum and genus. 
+The total normalized abundances computed from DNA and RNA data is `r sum(abun.dna.by.class$Abundance)` and `r sum(abun.rna.by.class$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.class.nonNA$Abundance))/sum(abun.dna.by.class$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.class.nonNA$Abundance))/sum(abun.rna.by.class$Abundance) * 100`$\%$ have known genera for both DNA and RNA. We impute ``NA`` with ``unclassified`` for phylum and genus. 
 
 <!-- ![Distribution of Species from DNA at 10m depth of Saanich Inlet](final_trees/dna/norB_DNA_10m.pdf){width=60%} -->
 
@@ -371,10 +374,10 @@ ggplot(aes(x = Phylum, y = Depth_m)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-annotate_figure(plot1, bottom = text_grob("Figure 3: Abundance of Phyla with norB (DNA vs. RNA) at different depths", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of Phyla with norB (DNA vs. RNA) at different depths", size = 12))
 ```
 
-According to Table 3, the genus associated with abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to the three Phyla Bacteriodetes, Chlorobi and Proteobacteria. The abundance of phylum, as shown in Fig. 3, differed with respect to depth and with DNA versus RNA. For Proteobacteria, the abundance of *norB* was greater at 200m in comparison with 100m. At depth of 200m, greater abundance of RNA was observed in comparison with DNA.
+According to Table 3, the genus associated with abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to the three Phyla Bacteriodetes, Chlorobi and Proteobacteria. The abundance of phylum, as shown in Fig. 4, differed with respect to depth and with DNA versus RNA. For Proteobacteria, the abundance of *norB* was greater at 200m in comparison with 100m. At depth of 200m, greater abundance of RNA was observed in comparison with DNA.
 
 ```{r figure4}
 plot1 <- norB.all.norm %>% 
@@ -392,7 +395,7 @@ ggplot(aes(x = Genus, y = Depth_m)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of genera with norB (DNA vs. RNA) at different depths", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 5: Abundance of genera with norB (DNA vs. RNA) at different depths", size = 12))
 ```
 
 
@@ -434,10 +437,10 @@ ggplot(aes(x = N2O_nM, y = Depth_m)) +
 
 annotate_figure(ggarrange(plot2, plot3, plot4, ncol = 3, nrow = 1, 
                                      labels = c("(a)", "(b)", "(c)")),
-                bottom = text_grob("Figure 5: Abundance of norB in relation to nitrogen species across depths", size = 12))
+                bottom = text_grob("Figure 6: Abundance of norB in relation to nitrogen species across depths", size = 12))
 ```
 
-According to Fig. 5, related to the abundance of NO~3~ and N~2~O, the abundance of *norB* increased from depth 10m to 100m, and declined from 100m to 200m. The abundance of *norB* related to NO~3~ has more of a sharp declined in comparison with that of N~2~O. Regarding to the abundance of *norB* related to NO~2~, a sharp declined is observed from 10m to 100m, the abundance level fluctuated from 100m to 150m, and declined from 150m to 200m.
+According to Fig. 6, related to the abundance of NO~3~ and N~2~O, the abundance of *norB* increased from depth 10m to 100m, and declined from 100m to 200m. The abundance of *norB* related to NO~3~ has more of a sharp declined in comparison with that of N~2~O. Regarding to the abundance of *norB* related to NO~2~, a sharp declined is observed from 10m to 100m, the abundance level fluctuated from 100m to 150m, and declined from 150m to 200m.
 
 # Discussion
 
@@ -445,7 +448,7 @@ At the depth of 100m, it appeared that most genes involved in the denitrificatio
 
 The environmental and evolutionary standpoints are interconnected in regards to the distributed metabolism seen in the nitrogen cycle. At various depths, the temperatures and presence of other chemical species will differ, with some being more significant than others. The differences in temperature and presence of other chemical species may in turn affect the entropy production (13). According to one study (13), biological systems acquire information through evolution and store it within its metagenome for maximum entropy production (MEP). Biological systems may then use this information to achieve MEP and further refine it through evolution. In other words, biological systems that can achieve MEP efficiently are able to allocate resources in expressing the optimal genes for survival in terms of their functional efficiency at the optimal temperatures and resource availability in the environment (13). 
 
-In terms of the nitrogen cycle, the differences of biogeochemical gradients at low and high depths – such as the high nitrogen species and low oxygen species at depths 100m and beyond – can be used to explain the increases in abundance of DNA and RNA for *norB* gene (Fig.2). This observation of oxygen control on denitrifiers was also made in another study (14) that described the decrease and inhibition of denitrification processes at low oxygen concentrations. Other studies (11 and 14) have created models to explain the distributed metabolism through gene abundance, biogeochemical gradients, or both. One model suggested looking at the models separately in terms of MEP and metabolic perspectives (13). In the MEP perspective, the form of the molecular machines is unimportant for biogeochemical MEP. Their model stated that living systems can be viewed as molecular machines that catalyzes reactions that both synthesize and degrade molecular machines and dissipate energy via redox reactions in the process, which are undifferentiated from abiotic systems (13). In the metabolic perspective, their model only predicts the functional characteristics in terms of allocation of molecular machinery (13). In other words, the metabolic model looks at the functional groups and community level gene expression from experiments to explain the distributed metabolism. On the other hand, the model proposed by the other study suggested looking at both perspectives in an integrated manner (11). Their model reasoned that both the gene abundance (DNA and RNA) and biogeochemical concentrations are linked such that gene expression patterns are determined by gene abundances and biogeochemical conditions with biogeochemical fluxes being excellent indicators for microbial community structures (11). By looking at the DNA, mRNA, and protein profiles with the biogeochemical concentrations, different perspectives on the community activity can be obtained in terms of the immediate catalytic potential of a community, the level of expression of control environmental mRNA and protein distributions, and the prediction of pathway expression and growth in relation to biogeochemical conditions (11). The logics applied to these models and studies can then be used to explain the figure results, which demonstrated how the distributed metabolism in the nitrogen cycle are connected to the gene abundances (Fig. 2) and biogeochemical gradients (Fig. 4) at various depths.  
+In terms of the nitrogen cycle, the differences of biogeochemical gradients at low and high depths – such as the high nitrogen species and low oxygen species at depths 100m and beyond – can be used to explain the increases in abundance of DNA and RNA for *norB* gene (Fig. 3). This observation of oxygen control on denitrifiers was also made in another study (14) that described the decrease and inhibition of denitrification processes at low oxygen concentrations. Other studies (11 and 14) have created models to explain the distributed metabolism through gene abundance, biogeochemical gradients, or both. One model suggested looking at the models separately in terms of MEP and metabolic perspectives (13). In the MEP perspective, the form of the molecular machines is unimportant for biogeochemical MEP. Their model stated that living systems can be viewed as molecular machines that catalyzes reactions that both synthesize and degrade molecular machines and dissipate energy via redox reactions in the process, which are undifferentiated from abiotic systems (13). In the metabolic perspective, their model only predicts the functional characteristics in terms of allocation of molecular machinery (13). In other words, the metabolic model looks at the functional groups and community level gene expression from experiments to explain the distributed metabolism. On the other hand, the model proposed by the other study suggested looking at both perspectives in an integrated manner (11). Their model reasoned that both the gene and transcript abundances and biogeochemical concentrations are linked such that gene expression patterns are determined by gene abundance and biogeochemical conditions with biogeochemical fluxes being excellent indicators for microbial community structures (11). By looking at the DNA, mRNA, and protein profiles with the biogeochemical concentrations, different perspectives on the community activity can be obtained in terms of the immediate catalytic potential of a community, the level of expression of control environmental mRNA and protein distributions, and the prediction of pathway expression and growth in relation to biogeochemical conditions (11). The logics applied to these models and studies can then be used to explain the figure results, which demonstrated how the distributed metabolism in the nitrogen cycle are connected to the gene abundances (Fig. 3) and biogeochemical gradients (Fig. 5) at various depths.  
 
 For future experiments, it would be interesting to examine the relationship between the genera associated with the *norB* gene. It is possible that the abundance of one genus can have an effect on the other at certain depths. Looking into which factors favour the growth of certain genera over the other could also be a viable project. It is worth noting that although our study was primarily concerned with the presence of one particular gene in the denitrification pathway, this method can be extended to examine other metabolic pathways in biogeochemical cycles such as decomposition. 
 
@@ -480,3 +483,7 @@ For future experiments, it would be interesting to examine the relationship betw
 13. Vallino JJ. 2010. Ecosystem biogeochemistry considered as a distributed metabolic network ordered by maximum entropy production. Philosophical Transactions: Biological Sciences. 365:1417-1427.
 
 14. Christensen S. 1988. Oxygen control prevents denitrifiers and barley plant roots from directly competing for nitrate. FEMS Microbiology Letters. 53:217-221.
+
+15. TreeSAPP Demo by Connor Morgan-Lang & Kim Dill-McFarland.
+
+16. Metagenomics. Date of Access: Apr.15.2018. Link: http://www.metagenomics.wiki/pdf/definition/rpkm-calculation. 
