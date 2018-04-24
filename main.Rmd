@@ -421,14 +421,14 @@ plot1<- norB.all.norm %>%
 figure2 <- annotate_figure(plot1, bottom = text_grob("Abundance (0-1) of norB gene (DNA vs. RNA) at different depths", size = 12))
 
 annotate_figure(ggarrange(figure1,figure2,widths = c(1.5,1)), 
-                bottom = text_grob("Figure 6: [Add caption]", size = 12))
+                bottom = text_grob("Figure 6: Concentration of nitrogen species to abundance of norB across depths", size = 12))
 ```
 
 According to Fig. 6, related to the abundance of NO~3~ and N~2~O, the abundance of *norB* increased from depth 10m to 100m, and declined from 100m to 200m. The abundance of *norB* related to NO~3~ has more of a sharp declined in comparison with that of N~2~O. Regarding to the abundance of *norB* related to NO~2~, a sharp declined is observed from 10m to 100m, the abundance level fluctuated from 100m to 150m, and declined from 150m to 200m.
 
 # Discussion
 
-At the depth of 100m, it appeared that most genes involved in the denitrification pathway like *norB* were present, but they were neither abundant nor highly expressed. However, the *nirK*/*nirS* genes encoding nitrite reductase had high abundance and high expression, suggesting that nitrite reductase was actively being reduced to nitric oxide at this depth. The rest of the pathway had low activity by comparison, including the gene encoding the nitrate reductase subunit, *napA*, which had low abundance and low expression. At the depth of 200m, most genes involved in the denitrification pathway were also present and were expressed in high levels. This was observed especially for *norB*, which was shown to be the most abundantly expressed at depth 200m. Interestingly, *norC* genes was found to have similar expression level compared with *norB* across all depth levels; this finding suggested that *norB* and *norC* could potentially be involved in similar denitrification pathways.
+The discussion regarding denitrification in the last day of lecture revealed that at the 100m depth most genes involved in the denitrification pathway like *norB* were present, but they were neither abundant nor highly expressed. However, the *nirK*/*nirS* genes encoding nitrite reductase had high abundance and high expression, suggesting that nitrite reductase was actively being reduced to nitric oxide at this depth. The rest of the pathway had low activity by comparison, including the gene encoding the nitrate reductase subunit, *napA*, which had low abundance and low expression. At the depth of 200m, most genes involved in the denitrification pathway were also present and were expressed in high levels. This was observed especially for *norB*, which was shown to be the most abundantly expressed at depth 200m. *norC* genes were also found to have similar expression level compared with *norB* across all depth levels. One paper brought up evidence that the genes norB and norC worked as subunits in the cNOR enzyme in other nitrogen species containing nitric oxide reductase (17).  
 
 The environmental and evolutionary standpoints are interconnected in regards to the distributed metabolism seen in the nitrogen cycle. At various depths, the temperatures and presence of other chemical species will differ, with some being more significant than others. The differences in temperature and presence of other chemical species may in turn affect the entropy production (13). According to one study (13), biological systems acquire information through evolution and store it within its metagenome for maximum entropy production (MEP). Biological systems may then use this information to achieve MEP and further refine it through evolution. In other words, biological systems that can achieve MEP efficiently are able to allocate resources in expressing the optimal genes for survival in terms of their functional efficiency at the optimal temperatures and resource availability in the environment (13). 
 
@@ -470,4 +470,6 @@ For future experiments, it would be interesting to examine the relationship betw
 
 15. TreeSAPP Demo by Connor Morgan-Lang & Kim Dill-McFarland.
 
-16. Metagenomics. Date of Access: Apr.15.2018. Link: http://www.metagenomics.wiki/pdf/definition/rpkm-calculation. 
+16. Metagenomics. Date of Access: Apr.15.2018. Link: http://www.metagenomics.wiki/pdf/definition/rpkm-calculation.
+
+17. Schurig-Briccio LA, Venkatakrishnan P, Hemp J, Bricio C, Berenguer J, Gennis RB. 2013. Characterization of the nitric oxide reductase from Thermus thermophilus. Proceedings of the National Academy of Sciences of the United States of America. 110:12613-12618.
