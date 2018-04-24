@@ -183,14 +183,6 @@ norB.all <- norB.DNA.10m %>%
 norB.all.norm <- norB.all
 ```
 
-```{r normalize, include=FALSE}
-# Also, normalize abundance information relative based on DNA or RNA 
-# norB.all.norm <- norB.all %>% 
-#   group_by(Type) %>%
-#   mutate(Abundance = ifelse(Abundance==0, 0, Abundance/sum(Abundance))) %>%
-#   ungroup()
-```
-
 Sequences for *norB* were obtained from various depths at Saanich Inlet. Listed below are the method of processing the tree-based sensitive and accurate protein profiler (TreeSAPP):
 
 1)     The query sequences were first mapped to the reference sequences in BLASTp.
@@ -232,7 +224,7 @@ Using the processed results, DNA abundance and RNA abundance analyses were done 
 
 # Results
 
-## Analysis of the DNA abundance of *norB* with depth \label{sec:community}
+## Analysis of the DNA abundance of *norB* with depth
 
 ```{r}
 abun.dna.by.depth <- norB.all %>% 
@@ -264,7 +256,7 @@ annotate_figure(plot1, bottom = text_grob("Figure 2: Abundance (0-1) of norB gen
 
 The DNA abundance of the *norB* followed an upwards trend where it increased from a normalized relative abundance of 2.5% at depth 100m to 10.0% at depth 200m. This was consistent with what had been shown in previous studies, where genes associated with partial denitrification to nitrous oxide were most abundant at a depth of 150m (11) and were not present at depth 50m. An exception of this trend occurs at depth 165 meters, where the abundance declined sharply. Since the gene encodes the nitric oxide reductase enzyme—responsible for the reduction of nitric oxide to nitrous oxide—the microbes possessing these genes would be considered partial denitrifiers. It is likely that conditions at lower depths are more ideal for partial denitrifiers, which would explain why the gene’s presence is more abundance at lower depths. Depth 165m could be less ideal for microbial growth because it sits between the sulfide nitrate transition zone (SNTZ) and the sulfide zone. 
 
-## Analysis of similarities between RNA and DNA abundance information of *norB* with depths \label{sec:OTUabundance}
+## Analysis of similarities between RNA and DNA abundance information of *norB* with depths
 
 ```{r}
 abun.rna.by.depth <- norB.all %>% 
@@ -298,7 +290,7 @@ annotate_figure(plot1, bottom = text_grob("Figure 3: Abundance (0-1) of norB gen
 
 The RNA abundance of the norB gene also seemed to follow a similar linear trend like its DNA abundance. It has a normalized relative abundance of 5% at depth 150m and it increased to 15% at depth 200m. This was expected since Hawley *et al.* (12) observed that expressed pathways progressed from ammonia oxidation and nitrification at higher depths to denitrification at lower depths.
 
-## Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths \label{sec:richness}
+## Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths
 
 ```{r}
 abun.by.class <- norB.all %>%
@@ -372,7 +364,7 @@ plot1 <- norB.all.norm %>%
 annotate_figure(plot1, bottom = text_grob("Figure 5: Abundance of genera with norB (DNA vs. RNA) at different depths grouped by class rank", size = 12))
 ```
 
-## Analysis of the abundance of *norB* in relation to nitrogen species in Saanich \label{sec:ASVabundances}
+## Analysis of the abundance of *norB* in relation to nitrogen species in Saanich 
 
 ```{r figure6, fig.width=12}
 load("data/mothur_phyloseq.RData")
