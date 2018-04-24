@@ -78,7 +78,7 @@ Saanich Inlet, located in southeastern Vancouver Island, is a seasonally anoxic 
 
 Nitrogen is the fourth most abundant element in the cellular biomass (5). Microbial activities entirely control the interchange between the inert N~2~ gas in the atmosphere to usable nitrogen that can support cellular metabolism and growth (5). The nitrogen cycle consists of four significant nitrogen-transformation flows: ammonification, nitrification, denitrification, anammox (5). Ammonification, includes nitrogen fixation, where N~2~ is reduced to ammonium by bacteria and archaea that encode nitrogenase enzyme, and also the assimilatory and dissimilatory reduction of nitrate to ammonium (5). It should be noted that nitrogen fixation is an oxygen sensitive process as nitrogenase enzyme is inhibited by oxygen (6). Nitrification is the process of oxidation of ammonia to nitrite, and further oxidation of nitrite to nitrate (5). Denitrification is the process of dissimilatory reduction of nitrate (NO~3~^-^) and nitrite (NO~2~^-^) to the gaseous oxides, nitric oxide (NO), and nitrous oxide (N~2~O), which may further get reduced to dinitrogen gas (N~2~) (5). In anaerobic ammonium oxidation commonly abbreviated as anammox, the pools of nitrite (N~2~O^-^) and ammonium (NH~4~^+^) are utilized to form N~2~ (5). Anammox is used for wastewater treatment, as it removes both ammonium and nitrite simultaneously without producing N~2~O (5).
 
-![Figure 2: Nitrogen Cycle](N_Cycle_Figure.png)
+![Figure 1: Nitrogen Cycle](N_Cycle_Figure.png)
 
 The denitrification process plays an integral role in the global nitrogen balance. It returns the nitrogen into the atmosphere and maintains homeostasis between the nitrogen content of soil and air. (8). The four enzymes of denitrification are: nitrate, nitrite, nitric oxide and nitrous oxide reductase which are encoded by *nar*, *nir*, *nor*, and *nos*, respectively (9). Denitrification takes place in aquatic, marine, and terrestrial ecosystems, and the rate of this process is affected by various factors such as pH, temperature, and oxygen concentration (8). In OMZs, nitrate (NO~3~^-^) and nitrite (NO~2~^-^) act as the main terminal electron acceptors in respiration (10). Nitrogen oxide reductases are sensitive to oxygen and it is known that oxygen represses denitrification (8). Among the four N-oxide reductases, nitrous oxide reductase is the most sensitive enzyme to oxygen, leading to the increase in N~2~O production in the suboxic and anoxic conditions (10). The interest in denitrification process is for several reasons. Denitrification is the process contributing to the loss of fertilizer nitrogen, therefore reducing the agriculture productivity (7). Additionally, denitrification can be utilized to remove nitrogen from high-nitrate wastewaters to decrease the contamination and eutrophication (7). However, denitrification can have negative effects on the climate system, as the emission of N~2~O leads to stratospheric ozone layer depletion, contributing to global warming (7). Some of the major denitrifying bacteria are from genera: *Alcaligenes*, *Agrobacterium*, *Bacillus*, *Hyphomicrobium*, *Moraxella*, *Pseudomonas*, and *Paracoccus* (7). Due to the high frequency of isolation, the genera *Pseudomonas* and *Alcaligenes* are of the greatest significance (4).
 
@@ -179,14 +179,12 @@ norB.all <- norB.DNA.10m %>%
   mutate(Abundance = ifelse(is.na(Abundance), 0, Abundance)) %>%
   # Separate Taxonomy into columns so we can plot at different levels
   separate(Taxonomy, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep="; ")
+
+norB.all.norm <- norB.all
 ```
 
-```{r normalize}
+```{r normalize, include=FALSE}
 # Also, normalize abundance information relative based on DNA or RNA 
-norB.all.norm <- norB.all %>% 
-  group_by(Type) %>%
-  mutate(Abundance = ifelse(Abundance==0, 0, Abundance/sum(Abundance))) %>%
-  ungroup()
 # norB.all.norm <- norB.all %>% 
 #   group_by(Type) %>%
 #   mutate(Abundance = ifelse(Abundance==0, 0, Abundance/sum(Abundance))) %>%
@@ -245,7 +243,7 @@ abun.dna.by.depth <- norB.all %>%
 kable(abun.dna.by.depth,caption="Table 1: Abundance of the norB gene (DNA) at different depths by RPKM")
 ```
 
-```{r figure1}
+```{r figure2}
 plot1 <- norB.all.norm %>% 
   # Filter the DNA data
   filter(Type == "DNA") %>% 
@@ -254,10 +252,10 @@ plot1 <- norB.all.norm %>%
 
   ggplot(aes(x = "norB", y = Depth_m)) +
   # Use the size aesthetic to show abundance
-  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100)), colour="brown") +
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance)), colour="brown") +
   # Reverse the why axis so depth increases going down
   scale_y_reverse(lim=c(200,10)) +
-  scale_size("Norm. relative abundance (%)") + 
+  scale_size("Abundance") + 
   labs(x = "", y="Depth (m)") +
   theme_classic()
 
@@ -280,16 +278,18 @@ abun.by.depth <- full_join(x = abun.dna.by.depth,
 kable(abun.by.depth, caption="Table 2: Abundance of norB gene (DNA vs. RNA) at different depths by RPKM")
 ```
 
-```{r figure2}
+```{r figure3}
 plot1<- norB.all.norm %>% 
 # Change NAs to "unclassified" at the level you want to plot
-  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>%
+  group_by(Depth_m) %>%
   # Show both RNA and DNA using an x variable  
   ggplot(aes(x = Type, y = Depth_m)) +
-  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100)), colour="brown") +
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance))) +
+  geom_point(shape=21) + 
   scale_y_reverse(lim=c(200, 10)) +
   # Remove zeros by setting min limit to 1e-09
-  scale_size("Norm. relative abundance (%)") + 
+  scale_size("Abundance") + 
   labs(x = "", y="Depth (m)") +
   theme_classic()
 
@@ -328,50 +328,53 @@ kable(abun.by.class, caption="Table 3: Taxa associated (including NA values) wit
 
 The total abundances computed from DNA and RNA data is `r sum(abun.dna.by.class$Abundance)` and `r sum(abun.rna.by.class$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.class.nonNA$Abundance))/sum(abun.dna.by.class$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.class.nonNA$Abundance))/sum(abun.rna.by.class$Abundance) * 100`$\%$ have known genera for both DNA and RNA. We impute ``NA`` with ``unclassified`` for phylum and genus. 
 
-```{r figure3}
+```{r figure4}
 plot1 <- norB.all.norm %>% 
 # Change NAs to "unclassified" at the level you want to plot
   mutate(Phylum = ifelse(is.na(Phylum), "unclassified", Phylum)) %>% 
+  group_by(Depth_m) %>%
   
 ggplot(aes(x = Phylum, y = Depth_m)) +
 # Use an ifelse statement to make 0 values into NAs so that they don't show up on the plot
 # Use position_dodge to keep points from overlapping
-  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100), color = Type),
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance), color = Type),
              position = position_dodge(0.5)) +
   scale_y_reverse(lim=c(200,10)) +
-  scale_size("Norm. relative abundance (%)") + 
-  labs(x = "", y="Depth (m)") + 
+  scale_size("Abundance") + 
+  labs(x = "Phyla", y="Depth (m)") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of Phyla with norB (DNA vs. RNA) at different depths", size = 12))
+annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of phyla with norB (DNA vs. RNA) at different depths", size = 12))
 ```
 
 According to Table 3, the genus associated with abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to the three Phyla Bacteriodetes, Chlorobi and Proteobacteria. The abundance of phylum, as shown in Fig. 4, differed with respect to depth and with DNA versus RNA. For Proteobacteria, the abundance of *norB* was greater at 200m in comparison with 100m. At depth of 200m, greater abundance of RNA was observed in comparison with DNA.
 
-```{r figure4}
+```{r figure5, fig.height=12, fig.width=10}
 plot1 <- norB.all.norm %>% 
 # Change NAs to "unclassified" at the level you want to plot
-  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>% 
-  
-ggplot(aes(x = Genus, y = Depth_m)) +
-# Use an ifelse statement to make 0 values into NAs so that they don't show up on the plot
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>%
+  mutate(Class = ifelse(is.na(Class), "unclassified", Class)) %>%
+  ggplot(aes(x = Genus, y = Depth_m)) +
+  # Use an ifelse statement to make 0 values into NAs so that they don't show up on the plot
 # Use position_dodge to keep points from overlapping
-  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance*100), color = Type),
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance), color = Type),
              position = position_dodge(0.5)) +
   scale_y_reverse(lim=c(200,10)) +
-  scale_size("Norm. relative abundance (%)") + 
-  labs(x = "", y="Depth (m)") + 
+  scale_size("Abundance") + 
+  labs(x = "Class", y="Depth (m)") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-annotate_figure(plot1, bottom = text_grob("Figure 5: Abundance of genera with norB (DNA vs. RNA) at different depths", size = 12))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  facet_wrap(~Class, scales="free_x", ncol=3) + 
+  theme(strip.text = element_text(face="bold", size=8), 
+        strip.background = element_rect(fill="lightblue", 
+                                        colour="black",size=1))
+annotate_figure(plot1, bottom = text_grob("Figure 5: Abundance of genera with norB (DNA vs. RNA) at different depths grouped by class rank", size = 12))
 ```
-
 
 ## Analysis of the abundance of *norB* in relation to nitrogen species in Saanich \label{sec:ASVabundances}
 
-```{r figure5}
+```{r figure6, fig.width=12}
 load("data/mothur_phyloseq.RData")
 metadata <- data.frame(mothur@sam_data)
 
@@ -405,9 +408,28 @@ ggplot(aes(x = N2O_nM, y = Depth_m)) +
   scale_y_reverse(limits = c(200,10)) +
   labs(y = "Depth (m)", x = "N2O_nM")
 
-annotate_figure(ggarrange(plot2, plot3, plot4, ncol = 3, nrow = 1, 
+figure1 <- annotate_figure(ggarrange(plot2, plot3, plot4, ncol = 3, nrow = 1, 
                                      labels = c("(a)", "(b)", "(c)")),
-                bottom = text_grob("Figure 6: Abundance of norB in relation to nitrogen species across depths", size = 12))
+                bottom = text_grob("Abundance of norB in relation to nitrogen species across depths", size = 12))
+
+plot1<- norB.all.norm %>% 
+# Change NAs to "unclassified" at the level you want to plot
+  mutate(Genus = ifelse(is.na(Genus), "unclassified", Genus)) %>%
+  group_by(Depth_m) %>%
+  # Show both RNA and DNA using an x variable  
+  ggplot(aes(x = Type, y = Depth_m)) +
+  geom_point(aes(size = ifelse(Abundance == 0, NA, Abundance))) +
+  geom_point(shape=21) + 
+  scale_y_reverse(lim=c(200, 10)) +
+  # Remove zeros by setting min limit to 1e-09
+  scale_size("Abundance") + 
+  labs(x = "", y="Depth (m)") +
+  theme_classic()
+
+figure2 <- annotate_figure(plot1, bottom = text_grob("Abundance (0-1) of norB gene (DNA vs. RNA) at different depths", size = 12))
+
+annotate_figure(ggarrange(figure1,figure2,widths = c(1.5,1)), 
+                bottom = text_grob("Figure 6: [Add caption]", size = 12))
 ```
 
 According to Fig. 6, related to the abundance of NO~3~ and N~2~O, the abundance of *norB* increased from depth 10m to 100m, and declined from 100m to 200m. The abundance of *norB* related to NO~3~ has more of a sharp declined in comparison with that of N~2~O. Regarding to the abundance of *norB* related to NO~2~, a sharp declined is observed from 10m to 100m, the abundance level fluctuated from 100m to 150m, and declined from 150m to 200m.
