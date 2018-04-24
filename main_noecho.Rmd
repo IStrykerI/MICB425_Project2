@@ -85,20 +85,7 @@ The denitrification process plays an integral role in the global nitrogen balanc
 The objective of this project is to reassemble the nitrogen cycle as a distributed metabolic process which may provide new insight into the roles that microbes play on nutrient and energy fluxes in the ocean. There are several well-defined gene encoding key steps in the nitrogen cycle and they serve as basis for functional anchor screening to determine their distribution across the Tree of Life. Here, we focused on the nitric oxide reductase, *norB*, and we examined its DNA and RNA abundance across the different depths in Saanich Inlet. We also investigated how the nitrogen species in Saanich relate to the abundances of *norB*.
 
 # Materials and Experimental Configuration
-## Experimental Protocols
-
-To understand the correlation of microbial diversity and oxygen concentration across samples, we report four experimentally designed test protocols:
-
-**P1.** Analysis of the DNA abundance of *norB* with depth.
-
-**P2.** Analysis of similarities between RNA and DNA abundance information of *norB* with depths.
-
-**P3.** Reconstructing the associated taxa with *norB* and analyze variances of DNA and RNA based on depths.
-
-**P4.** Analysis of the abundance of *norB* in relation to nitrogen species in Saanich.
-
-
-## Dataset
+## Methods
 
 ```{r loadingDNA}
 ## DNA
@@ -145,10 +132,6 @@ norB.RNA.165m <- read_tsv("data/rna/norB_RNA_165m_marker_contig_map.tsv") %>%
 norB.RNA.200m <- read_tsv("data/rna/norB_RNA_200m_marker_contig_map.tsv") %>% 
   select(Tax.RNA.200 = Confident_Taxonomy, Abund.RNA.200 = Abundance, Query)
 ```
-
-## Data Preporocessing
-
-Manipulate the data into a single data frame
 
 ```{r preprocessing}
 norB.all <- norB.DNA.10m %>% 
@@ -205,8 +188,6 @@ norB.all.norm <- norB.all %>%
   mutate(Abundance = ifelse(Abundance==0, 0, Abundance/sum(Abundance))) %>%
   ungroup()
 ```
-
-## Methods
 
 Sequences for *norB* were obtained from various depths at Saanich Inlet. Listed below are the method of processing the tree-based sensitive and accurate protein profiler (TreeSAPP):
 
