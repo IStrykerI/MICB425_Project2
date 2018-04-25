@@ -4,25 +4,25 @@ subtitle: "Charting the distributed nitrogen cycle"
 author: 
   - Karl Abuan
   - May Ho
-  - Jonah Lin
+  - Wei Ting Lin (Jonah)
   - Leilynaz Malekafzali
   - Tiffany Yang
   - Abdur Rahman M. A. Basher
 abstract: |
-  Recent developments of high-throughput sequencing and various bioinformatics platforms have provided us with further understanding of microbial functions on an ecological scale, including microbes' roles in global biogeochemical cycles. In particular, the analyses of DNA and RNA directly from the environment have provided us with the ability to answer important questions: which microbes are present, what are they doing, and how do they respond to changes? Here, we use DNA and RNA sequence data to examine the nitrogen cycle in Saanich Inlet, which is an seasonally anoxic fjord and also a suitable model to study microbial community responses to changes in oxygen level. Although there are several well-defined gene encoding key steps in the nitrogen cycle, the primary investigation of this report focuses on the nitric oxide reductase, *norB*, and its abundance at multiple depths in Saanich Inlet. Through a new software pipeline, TreeSAPP, we found that DNA abundance of *norB* followed an upward trend, increasing from 2.5% at depth 100m to 10.0% at depth 200m. Similarly, RNA abundance was observed to increase from 5% at depth 150m to 15% at depth 200m. The resulting trees from TreeSAPP identified the different genera responsible for the presence of *norB* belonging to the Phyla Bacteriodetes, Chlorobi and Proteobacteria. While our results unveiled the abundance of *norB* at various depths in Saanich, the methods we used can be extended to other genes of interest in an effort to further examine the biogeochemical processes and predict microbial responses to changes or disturbances in an environment.
+  Recent developments of high-throughput sequencing and various bioinformatics platforms have provided us with further understanding of microbial functions on an ecological scale, including microbes' roles in global biogeochemical cycles. In particular, the analyses of DNA and RNA directly from the environment have provided us with the ability to answer important questions: which microbes are present, what are they doing, and how do they respond to changes? Here, we use DNA and RNA sequence data to examine the nitrogen cycle in Saanich Inlet, which is an seasonally anoxic fjord and also a suitable model to study microbial community responses to changes in oxygen level. Although there are several well-defined gene encoding key steps in the nitrogen cycle, the primary investigation of this report focuses on the nitric oxide reductase, *norB*, and its abundance at multiple depths in Saanich Inlet. Through a new software pipeline, TreeSAPP, we found that DNA abundance of the *norB* followed an upward trend, increasing from 50 at depth 100m to 200 at depth 200m.  Similarly, RNA abundance was observed to increase from around 30 at depth 100m to 500 at depth 200m. The resulting trees from TreeSAPP identified the different genera responsible for the presence of norB belonging to the following phyla: Bacteriodetes, Chlorobi and Proteobacteria. It was observed that the Proteobacteria phylum is the major contributor to norB DNA and RNA abundance. While our results unveiled the abundance of *norB* at various depths in Saanich, the methods we used can be extended to other genes of interest in effort to further examine biogeochemical processes, and predict microbial responses to changes or disturbances in an environment.
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 header-includes:
    - \newcommand*{\secref}[1]{Section~\ref{#1}}
 output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
   pdf_document:
     toc: yes
     toc_depth: 3
     number_sections: yes
     fig_caption: true
-  html_document:
-    toc: yes
-    toc_float:
-      collapsed: no
 mainfont: Times
 fontsize: 11 pt
 editor_options:
@@ -84,8 +84,7 @@ The denitrification process plays an integral role in the global nitrogen balanc
 
 The objective of this project is to reassemble the nitrogen cycle as a distributed metabolic process which may provide new insight into the roles that microbes play on nutrient and energy fluxes in the ocean. There are several well-defined gene encoding key steps in the nitrogen cycle and they serve as basis for functional anchor screening to determine their distribution across the Tree of Life. Here, we focused on the nitric oxide reductase, *norB*, and we examined its DNA and RNA abundance across the different depths in Saanich Inlet. We also investigated how the nitrogen species in Saanich relate to the abundances of *norB*.
 
-# Materials and Experimental Configuration
-## Methods
+# Methods
 
 ```{r loadingDNA}
 ## DNA
@@ -340,9 +339,9 @@ ggplot(aes(x = Phylum, y = Depth_m)) +
 annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of phyla with norB (DNA vs. RNA) at different depths", size = 12))
 ```
 
-According to Table 3, the genera associated with the abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to three Phylum: Bacteriodetes, Chlorobi and Proteobacteria. The abundances of the phyla (Fig. 3) differed with respect to depth and with DNA versus RNA. The abundance of both DNA and RNA was found to be the greatest for Proteobacteria in comparison with other phylum across all depth level. Regarding Proteobacteria, it was observed to be the only known phylum presented among Bacteroides, Chlorobi and Proteobacteria at depth of 165m. Its DNA level of *norB* has found to be more abundant than its RNA level of *norB* from depth 100-150m, but its RNA level of *norB* has been found to be more abundant than its DNA level of *norB* from depth of 150m to 200m. Proteobacteria was known to contribute to nitrogen fixation and contains various genes including those involved in Nod factor synthesis, nodule development, and synthesis of the nitrogen-fixing apparatus (13). Therefore, great abundance of *norB* gene is expected to be found in Proteobacteria.
+According to Table 3, the genera associated with the abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to three Phylum: Bacteriodetes, Chlorobi and Proteobacteria. The abundances of the phyla (Fig. 3) differed with respect to depth and with DNA versus RNA. The abundance of both DNA and RNA was found to be the greatest for Proteobacteria in comparison with other phylum across all depth level. Regarding Proteobacteria, it was observed to be the only known phylum presented among Bacteroides, Chlorobi and Proteobacteria at depth of 165m. Its DNA level of *norB* has found to be more abundant than its RNA level of *norB* from depth 100-150m, but its RNA level of *norB* has been found to be more abundant than its DNA level of *norB* from depth of 150m to 200m. Proteobacteria was known to contribute to nitrogen fixation and contains various genes including those involved in Nod factor synthesis, nodule development, and synthesis of the nitrogen-fixing apparatus (18). Therefore, great abundance of *norB* gene is expected to be found in Proteobacteria.
 
-As shown in Fig. 4, DNA and RNA levels was found to be the most abundant for Gammaproteobacteria. 5 different classes of genra: *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, and *Thiocapsa* were found to be presented in Gammaproteobacteria, with only *Endozoicomonas* and *Beggiatoa* having shown expression of the *norB* gene.  Gammaproteobacteria was found to occupy within the plants' nodules and acquired the ability to fix nitrogen and provide a nitrogen source for plants (14). The observation of abundance of *norB* within Gammaproteobacteria was expected. 
+As shown in Fig. 4, DNA and RNA levels was found to be the most abundant for Gammaproteobacteria. 5 different classes of genra: *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, and *Thiocapsa* were found to be presented in Gammaproteobacteria, with only *Endozoicomonas* and *Beggiatoa* having shown expression of the *norB* gene.  Gammaproteobacteria was found to occupy within the plants' nodules and acquired the ability to fix nitrogen and provide a nitrogen source for plants (19). The observation of abundance of *norB* within Gammaproteobacteria was expected. 
 
 ```{r figure5, fig.height=12, fig.width=10}
 plot1 <- norB.all.norm %>% 
@@ -452,13 +451,13 @@ For future experiments, it would be interesting to examine the relationship betw
 
 4. Wright, JJ, Konwar, KM, Hallam, SJ. 2012. Microbial ecology of expanding oxygen minimum zones. Nature Reviews.Microbiology. 10:381. doi: 10.1038/nrmicro2778.
 
-5. Stein LY, Klotz MG. 2016. The nitrogen cycle . Cell Press 26:R94–R98.
+5. Stein LY, Klotz MG. 2016. The nitrogen cycle . Cell Press 26:R94-R98.
 
-6. Falkowski PG, Fenchel T, Delong EF. 2008. The Microbial Engines That Drive Earth’s Biogeochemical Cycles. Science 320:1034–1039.
+6. Falkowski PG, Fenchel T, Delong EF. 2008. The Microbial Engines That Drive Earth'ss Biogeochemical Cycles. Science 320:1034-1039.
 
 7. Knowles R. 1982. Denitrification . Microbiological Reviews 46: 43-70. 
 
-8. Bergaust L, Spanning RJMV, Frostegard A, Bakken LR. 2011. Expression of nitrous oxide reductase in Paracoccus denitrificans is regulated by oxygen and nitric oxide through FnrP and NNR. Microbiology 158:826–834.
+8. Bergaust L, Spanning RJMV, Frostegard A, Bakken LR. 2011. Expression of nitrous oxide reductase in Paracoccus denitrificans is regulated by oxygen and nitric oxide through FnrP and NNR. Microbiology 158:826-834.
 
 9. Dalsgaard T, Stewart FJ, Thamdrup B, Brabandere LD, Revsbech NP, Ulloa O, Canfield DE, Delong EF. 2014. Oxygen at Nanomolar Levels Reversibly Suppresses Process Rates and Gene Expression in Anammox and Denitrification in the Oxygen Minimum Zone off Northern Chile. mBio 5.
 
@@ -466,14 +465,18 @@ For future experiments, it would be interesting to examine the relationship betw
 
 11. Louca S, Hawley AK, Katsev S, Torres-Beltran M, Bhatia MP, Kheirandish S, Michiels CC, Capelle D, Lavik G, Doebeli M, Crowe SA, Hallam SJ. 2016. Integrating biogeochemistry with multiomic sequence information in a model oxygen minimum zone. Proc Natl Acad Sci 113:E5925–E5933.
 
-12. Hawley AK, Brewer HM, Norbeck AD, Pa a-Toli  L, Hallam SJ. 2014. Metaproteomics reveals differential modes of metabolic coupling among ubiquitous oxygen minimum zone microbes. Proc Natl Acad Sci 111:11395–11400.
+12. Hawley AK, Brewer HM, Norbeck AD, Pa a-Toli  L, Hallam SJ. 2014. Metaproteomics reveals differential modes of metabolic coupling among ubiquitous oxygen minimum zone microbes. Proc Natl Acad Sci 111:11395-11400.
 
 13. Vallino JJ. 2010. Ecosystem biogeochemistry considered as a distributed metabolic network ordered by maximum entropy production. Philosophical Transactions: Biological Sciences. 365:1417-1427.
 
 14. Christensen S. 1988. Oxygen control prevents denitrifiers and barley plant roots from directly competing for nitrate. FEMS Microbiology Letters. 53:217-221.
 
-15. TreeSAPP Demo by Connor Morgan-Lang & Kim Dill-McFarland.
+15. Morgan-Lang C and McFarland KD. TreeSAPP Demo. https://github.com/EDUCE-UBC/MICB425/blob/master/Module_04/Project2/Project2_TreeSAPP_code.html; 2018.
 
-16. Metagenomics. Date of Access: Apr.15.2018. Link: http://www.metagenomics.wiki/pdf/definition/rpkm-calculation.
+16. Metagenomics. http://www.metagenomics.wiki/pdf/definition/rpkm-calculation; 2018.
 
 17. Schurig-Briccio LA, Venkatakrishnan P, Hemp J, Bricio C, Berenguer J, Gennis RB. 2013. Characterization of the nitric oxide reductase from Thermus thermophilus. Proceedings of the National Academy of Sciences of the United States of America. 110:12613-12618.
+
+18. Fischer, H. M. (1994). Genetic regulation of nitrogen fixation in rhizobia. Microbiological reviews, 58(3), 352-386.
+
+19. Benhizia, Y., Benhizia, H., Benguedouar, A., Muresu, R., Giacomini, A., & Squartini, A. (2004). Gamma proteobacteria can nodulate legumes of the genus Hedysarum. Systematic and applied microbiology, 27(4), 462-468.
