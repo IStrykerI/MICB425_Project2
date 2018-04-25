@@ -9,20 +9,20 @@ author:
   - Tiffany Yang
   - Abdur Rahman M. A. Basher
 abstract: |
-  Recent developments of high-throughput sequencing and various bioinformatics platforms have provided us with further understanding of microbial functions on an ecological scale, including microbes’ roles in global biogeochemical cycles. In particular, the analyses of DNA and RNA directly from the environment have provided us with the ability to answer important questions: which microbes are present, what are they doing, and how do they respond to changes? Here, we use DNA and RNA sequence data to examine the nitrogen cycle in Saanich Inlet – which is an seasonally anoxic fjord and also a suitable model to study microbial community responses to changes in oxygen level. Although there are several well-defined gene encoding key steps in the nitrogen cycle, the primary investigation of this report focuses on the nitric oxide reductase, *norB*, and its abundance at multiple depths in Saanich Inlet. Through a new software pipeline, TreeSAPP, we found that DNA abundance of *norB* followed an upward trend, increasing from 2.5% at depth 100m to 10.0% at depth 200m. Similarly, RNA abundance was observed to increase from 5% at depth 150m to 15% at depth 200m. The resulting trees from TreeSAPP identified the different genera responsible for the presence of *norB* belonging to the Phyla Bacteriodetes, Chlorobi and Proteobacteria. While our results unveiled the abundance of *norB* at various depths in Saanich, the methods we used can be extended to other genes of interest in an effort to further examine the biogeochemical processes and predict microbial responses to changes or disturbances in an environment.
+  Recent developments of high-throughput sequencing and various bioinformatics platforms have provided us with further understanding of microbial functions on an ecological scale, including microbes' roles in global biogeochemical cycles. In particular, the analyses of DNA and RNA directly from the environment have provided us with the ability to answer important questions: which microbes are present, what are they doing, and how do they respond to changes? Here, we use DNA and RNA sequence data to examine the nitrogen cycle in Saanich Inlet, which is an seasonally anoxic fjord and also a suitable model to study microbial community responses to changes in oxygen level. Although there are several well-defined gene encoding key steps in the nitrogen cycle, the primary investigation of this report focuses on the nitric oxide reductase, *norB*, and its abundance at multiple depths in Saanich Inlet. Through a new software pipeline, TreeSAPP, we found that DNA abundance of *norB* followed an upward trend, increasing from 2.5% at depth 100m to 10.0% at depth 200m. Similarly, RNA abundance was observed to increase from 5% at depth 150m to 15% at depth 200m. The resulting trees from TreeSAPP identified the different genera responsible for the presence of *norB* belonging to the Phyla Bacteriodetes, Chlorobi and Proteobacteria. While our results unveiled the abundance of *norB* at various depths in Saanich, the methods we used can be extended to other genes of interest in an effort to further examine the biogeochemical processes and predict microbial responses to changes or disturbances in an environment.
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 header-includes:
    - \newcommand*{\secref}[1]{Section~\ref{#1}}
 output:
-  html_document:
-    toc: yes
-    toc_float:
-      collapsed: no
   pdf_document:
     toc: yes
     toc_depth: 3
     number_sections: yes
     fig_caption: true
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
 mainfont: Times
 fontsize: 11 pt
 editor_options:
@@ -254,7 +254,7 @@ plot1 <- norB.all.norm %>%
 annotate_figure(plot1, bottom = text_grob("Figure 2: Abundance (0-1) of norB gene (DNA) at different depths", size = 12))
 ```
 
-The DNA abundance of the *norB* followed an upwards trend where it increased from a normalized relative abundance of 2.5% at depth 100m to 10.0% at depth 200m. This was consistent with what had been shown in previous studies, where genes associated with partial denitrification to nitrous oxide were most abundant at a depth of 150m (11) and were not present at depth 50m. An exception of this trend occurs at depth 165 meters, where the abundance declined sharply. Since the gene encodes the nitric oxide reductase enzyme—responsible for the reduction of nitric oxide to nitrous oxide—the microbes possessing these genes would be considered partial denitrifiers. It is likely that conditions at lower depths are more ideal for partial denitrifiers, which would explain why the gene’s presence is more abundance at lower depths. Depth 165m could be less ideal for microbial growth because it sits between the sulfide nitrate transition zone (SNTZ) and the sulfide zone. 
+In Fig. 2, the DNA abundance of *norB* followed an upwards trend where it increased from 50 at depth 100m to 200 at depth 200m. This was consistent with what had been shown in previous studies, where genes associated with partial denitrification to nitrous oxide were most abundant at a depth of 150m and were not present at depth 50m (11). An exception of this trend occurs at depth 165m, where DNA abundance declined sharply to 50 as shown in Figure 2. This decline can be attributed to the low abundance of *norB* DNA of Proteobacteria at depth 165m (Fig. 4). A comparison of Fig. 2 and Fig. 4 reveals that the DNA abundance of *norB* gene mostly reflects *norB* DNA abundance of Proteobacteria. This suggested that the Proteobacteria phylum is the major contributor to the DNA abundance of *norB* gene.
 
 ## Analysis of similarities between RNA and DNA abundance information of *norB* with depths
 
@@ -288,7 +288,7 @@ plot1<- norB.all.norm %>%
 annotate_figure(plot1, bottom = text_grob("Figure 3: Abundance (0-1) of norB gene (DNA vs. RNA) at different depths", size = 12))
 ```
 
-The RNA abundance of the norB gene also seemed to follow a similar linear trend like its DNA abundance. It has a normalized relative abundance of 5% at depth 150m and it increased to 15% at depth 200m. This was expected since Hawley *et al.* (12) observed that expressed pathways progressed from ammonia oxidation and nitrification at higher depths to denitrification at lower depths.
+It was observed that the RNA abundance of *norB* gene in Fig. 3 followed a similar linear trend as the DNA abundance in Fig. 2. The abundance of RNA increased from around 30 at depth 100m to 500 at depth 200m (Fig. 3). However, the sharp decrease in DNA abundance at 165m depth was not observed for the RNA abundance of *norB* gene. In Fig. 4, the trend for RNA abundance of *norB* gene follows the same trend as the *norB* RNA abundance of the Proteobacteria phylum. This demonstrated that despite the low abundance of *norB* DNA at depth 165m, the expression of gene is high leading to an increase in the amount of *norB* RNA that is observed. 
 
 ## Reconstructing the associated taxa with norB and analyze variances of DNA and RNA based on depths
 
@@ -318,7 +318,7 @@ abun.by.class <- abun.dna.by.class %>%
 kable(abun.by.class, caption="Table 3: Taxa associated (including NA values) with the abundance of norB gene (DNA vs. RNA) at all depths by RPKM")
 ```
 
-The total abundances computed from DNA and RNA data is `r sum(abun.dna.by.class$Abundance)` and `r sum(abun.rna.by.class$Abundance)`, respictavely; however, only `r (sum(abun.dna.by.class.nonNA$Abundance))/sum(abun.dna.by.class$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.class.nonNA$Abundance))/sum(abun.rna.by.class$Abundance) * 100`$\%$ have known genera for both DNA and RNA. We impute ``NA`` with ``unclassified`` for phylum and genus. 
+The total abundances computed from DNA and RNA data is `r sum(abun.dna.by.class$Abundance)` and `r sum(abun.rna.by.class$Abundance)`, respectively; however, only `r (sum(abun.dna.by.class.nonNA$Abundance))/sum(abun.dna.by.class$Abundance) * 100`$\%$ and `r (sum(abun.rna.by.class.nonNA$Abundance))/sum(abun.rna.by.class$Abundance) * 100`$\%$ have known genera for both DNA and RNA. We impute ``NA`` with ``unclassified`` for phylum and genus. 
 
 ```{r figure4}
 plot1 <- norB.all.norm %>% 
@@ -340,7 +340,9 @@ ggplot(aes(x = Phylum, y = Depth_m)) +
 annotate_figure(plot1, bottom = text_grob("Figure 4: Abundance of phyla with norB (DNA vs. RNA) at different depths", size = 12))
 ```
 
-According to Table 3, the genus associated with abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to the three Phyla Bacteriodetes, Chlorobi and Proteobacteria. The abundance of phylum, as shown in Fig. 4, differed with respect to depth and with DNA versus RNA. For Proteobacteria, the abundance of *norB* was greater at 200m in comparison with 100m. At depth of 200m, greater abundance of RNA was observed in comparison with DNA.
+According to Table 3, the genera associated with the abundance of *norB* includes *Formosa*, *Muricauda*, *Zobellia*, *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, *Gallionella*, *Thiocapsa*, and *Rhizobiales*. These genera belong to three Phylum: Bacteriodetes, Chlorobi and Proteobacteria. The abundances of the phyla (Fig. 3) differed with respect to depth and with DNA versus RNA. The abundance of both DNA and RNA was found to be the greatest for Proteobacteria in comparison with other phylum across all depth level. Regarding Proteobacteria, it was observed to be the only known phylum presented among Bacteroides, Chlorobi and Proteobacteria at depth of 165m. Its DNA level of *norB* has found to be more abundant than its RNA level of *norB* from depth 100-150m, but its RNA level of *norB* has been found to be more abundant than its DNA level of *norB* from depth of 150m to 200m. Proteobacteria was known to contribute to nitrogen fixation and contains various genes including those involved in Nod factor synthesis, nodule development, and synthesis of the nitrogen-fixing apparatus (13). Therefore, great abundance of *norB* gene is expected to be found in Proteobacteria.
+
+As shown in Fig. 4, DNA and RNA levels was found to be the most abundant for Gammaproteobacteria. 5 different classes of genra: *Achromatium*, *Beggiatoa*, *Candidatus Competibacter*, *Endozoicomonas*, and *Thiocapsa* were found to be presented in Gammaproteobacteria, with only *Endozoicomonas* and *Beggiatoa* having shown expression of the *norB* gene.  Gammaproteobacteria was found to occupy within the plants' nodules and acquired the ability to fix nitrogen and provide a nitrogen source for plants (14). The observation of abundance of *norB* within Gammaproteobacteria was expected. 
 
 ```{r figure5, fig.height=12, fig.width=10}
 plot1 <- norB.all.norm %>% 
@@ -424,7 +426,9 @@ annotate_figure(ggarrange(figure1,figure2,widths = c(1.5,1)),
                 bottom = text_grob("Figure 6: Concentration of nitrogen species to abundance of norB across depths", size = 12))
 ```
 
-According to Fig. 6, related to the abundance of NO~3~ and N~2~O, the abundance of *norB* increased from depth 10m to 100m, and declined from 100m to 200m. The abundance of *norB* related to NO~3~ has more of a sharp declined in comparison with that of N~2~O. Regarding to the abundance of *norB* related to NO~2~, a sharp declined is observed from 10m to 100m, the abundance level fluctuated from 100m to 150m, and declined from 150m to 200m.
+According to Fig. 6, the trend of both NO~3~ and N~2~O were found to be increasing from 10m to 100m and decreasing from 100m to 200m, with levels of NO~3~ having a more sharp decline than  N~2~O. For the level of NO~2~, a sharp decline was observed from 10m to 100m, the abundance level of NO~2~  fluctuated from 100m to 150m, and declined from 150m to 200m. *norB* is part of the denitrifying cycle that contributes to the conversion of NO into N~2~O. The level of *norB* was found to be present past the depth level of 100m. RNA expression level of *norB* was observed to be increasing, whereas some fluctuations were observed for the expression level of DNA. 
+
+The comparisons of the graphs in Fig. 6 indicated that the expression of *norB* was increasing from the depth of 100m to 200m. The presence of such gene has contributed to the decline in the level of NO~2~ and NO~3~ after 100m via the denitrifying pathway. NO~2~ and NO~3~ were the reactants in the denitrification reactions that were converted into NO in the nitrogen cycle. The level of N~2~O was expected to increase since *norB* contributed to the conversion of NO into N~2~O. Thus the decline in level of N~2~O could be attributed to the presence of other genes in the nitrogen cycle.
 
 # Discussion
 
